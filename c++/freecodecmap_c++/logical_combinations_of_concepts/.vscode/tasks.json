@@ -1,0 +1,70 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "Build with",
+			"command": "I:\\mingw64\\bin\\g++.exe",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-g",
+				"-std=c++20",
+				"${workspaceFolder}\\*cpp",
+				"-o",
+				"${fileDirname}\\rosster.exe"
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"detail": "kompilator: I:\\mingw64\\bin\\g++.exe"
+		},
+		{
+			"type": "cppbuild",
+			"label": "Build with clang",
+			"command": "I:\\mingw64\\bin\\clang++.exe",
+			"args": [
+				"-fcolor-diagnostics",
+				"-fansi-escape-codes",
+				"-std=c++20",
+				"-g",
+				"${workspaceFolder}\\*cpp",
+				"-o",
+				"${fileDirname}\\rosster.exe"
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"detail": "kompilator: I:\\mingw64\\bin\\clang++.exe"
+		},
+		{
+			"type": "cppbuild",
+			"label": "Build witm MSVC",
+			"command": "cl.exe",
+			"args": [
+				"/Zi",
+				"/EHsc",
+				"/std=latest",
+				"/Fe",
+				"${workspaceFolder}\\*cpp",
+				"${fileDirname}\\rosster.exe"
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build",
+			"detail": "kompilator: cl.exe"
+		},
+		
+	]
+}
