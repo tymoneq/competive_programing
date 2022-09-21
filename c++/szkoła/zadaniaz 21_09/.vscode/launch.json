@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "i:/github/c/c++/freecodecmap_c++/classes/Inheretance/first_inh",
-      "program": "i:/github/c/c++/freecodecmap_c++/classes/Inheretance/first_inh/build/Debug/outDebug",
+      "cwd": "i:/github/c/c++/szkoła/zadaniaz 21_09",
+      "program": "i:/github/c/c++/szkoła/zadaniaz 21_09/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
