@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "i:/github/c/c++/freecodecmap_c++/classes/Inheretance/first_inh",
-      "program": "i:/github/c/c++/freecodecmap_c++/classes/Inheretance/first_inh/rosster.exe",
+      "cwd": "i:/github/c/c++/freecodecmap_c++/classes/Inheretance/protected_members",
+      "program": "i:/github/c/c++/freecodecmap_c++/classes/Inheretance/protected_members/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
