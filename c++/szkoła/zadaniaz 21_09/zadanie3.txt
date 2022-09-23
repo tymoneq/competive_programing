@@ -1,0 +1,2 @@
+ Najmniejszy obwód : 4640.94
+ Największe pole : 785494

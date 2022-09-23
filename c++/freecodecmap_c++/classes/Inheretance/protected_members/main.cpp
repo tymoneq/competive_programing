@@ -4,7 +4,7 @@
 
 int main(){
 
-    Player p1("Basketball");
+    Player p1("Basketball", "John", "Snow");
     p1.set_first_name("John");
     p1.set_last_name("Snow");
     std::cout << "player : " << p1 << std::endl;
