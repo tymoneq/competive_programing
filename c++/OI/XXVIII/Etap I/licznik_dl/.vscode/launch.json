@@ -9,7 +9,7 @@
       "stopAtEntry": false,
       "externalConsole": true,
       "cwd": "i:/github/c/c++/OI/XXVIII/Etap I/licznik_dl",
-      "program": "i:/github/c/c++/OI/XXVIII/Etap I/licznik_dl/rosster.exe",
+      "program": "i:/github/c/c++/OI/XXVIII/Etap I/licznik_dl/a.exe",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

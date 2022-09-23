@@ -14,7 +14,7 @@ int main()
 
     for (int i = 0; i < z; i++)
     {
-        int x{}, indeks{}, suma{0};
+        int x{}, indeks{};
         cin >> operacja >> x;
         if (operacja == "W")
         {
@@ -30,7 +30,7 @@ int main()
         }
         else if (operacja == "S")
         {
-            
+            int suma{0};
             int temp_dl_wew = dl_wew[dl_wew.size() - x] - 48;
             int temp_dl_zew = dl_zew[dl_zew.size() - x] - 48;
             int temp_dl_wew_1 = dl_wew[dl_wew.size() - x + 1] - 48;
@@ -41,10 +41,10 @@ int main()
             }
             else if (temp_dl_zew_1 + temp_dl_wew_1 == 9)
             {
-                
-                for (int j = dl_wew.size() - x + 2 ; j < dl_wew.size(); j++)
+
+                for (int j = dl_wew.size() - x + 2; j < dl_wew.size(); j++)
                 {
-                   
+
                     int temp_1 = dl_wew[j] - 48;
                     int temp_2 = dl_zew[j] - 48;
                     if (temp_1 + temp_2 >= 10)
@@ -65,8 +65,13 @@ int main()
             {
                 suma = temp_dl_wew + temp_dl_zew;
             }
+            if (suma % 10 == -5)
+                cout << 1 << "\n";
+            else if (suma % 10 == -6)
+                cout << 0 << "\n";
 
-            cout << suma % 10 << '\n';
+            else
+                cout << suma % 10 << '\n';
         }
     }
 
