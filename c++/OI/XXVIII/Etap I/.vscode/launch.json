@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "h:/c++Freecode",
-      "program": "h:/c++Freecode/rosster.exe",
+      "cwd": "d:/c++/c/c++/OI/XXVIII/Etap I",
+      "program": "d:/c++/c/c++/OI/XXVIII/Etap I/a.exe",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

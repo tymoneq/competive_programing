@@ -21,6 +21,14 @@ public:
         ex[index(pos)] = digit;
     }
 
+/**
+ * > If the position is in the input, add the digits at that position in the input and the extension,
+ * and subtract 10 if the result is 10 or more
+ * 
+ * @param pos the position of the digit to get
+ * 
+ * @return The sum of the digits at the given position.
+ */
     char get(size_t pos) const
     {
         auto i = index(pos);
