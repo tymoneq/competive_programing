@@ -2,25 +2,14 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "(Windows) Launch",
-      "type": "cppvsdbg",
-      "request": "launch",
-      "program": "wprowadź nazwę programu, na przykład ${workspaceFolder}/a.exe",
-      "args": [],
-      "stopAtEntry": false,
-      "cwd": "${fileDirname}",
-      "environment": [],
-      "console": "externalTerminal"
-    },
-    {
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "d:/c++/c/c++/szkoła/zadania",
-      "program": "d:/c++/c/c++/szkoła/zadania/build/Debug/outDebug",
+      "cwd": "h:/c++Freecode",
+      "program": "h:/c++Freecode/rosster.exe",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
