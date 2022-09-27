@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "i:/github/c/c++/OI/XXVIII/Etap I",
-      "program": "i:/github/c/c++/OI/XXVIII/Etap I/a.exe",
+      "cwd": "i:/github/c/c++/freecodecmap_c++/classes/Inheretance/base_class_access_spec",
+      "program": "i:/github/c/c++/freecodecmap_c++/classes/Inheretance/base_class_access_spec/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

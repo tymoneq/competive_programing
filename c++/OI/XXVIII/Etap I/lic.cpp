@@ -72,7 +72,7 @@ void setupIO()
     std::cin.tie(nullptr);
 }
 
-void processData(std::istream& in, std::ostream& out)
+void processData(std::istream& in, std::ostream& cout)
 {
     size_t n, z;
     std::string internal, external;
@@ -83,7 +83,7 @@ void processData(std::istream& in, std::ostream& out)
             size_t i;
             in >> operation >> i;
             if (operation == 'S') {
-                out << debt.get(i) << '\n';
+                cout << debt.get(i) << '\n';
             } else {
                 char digit;
                 in >> digit;
