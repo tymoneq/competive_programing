@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "d:/c++/c/c++/jd/grafy",
-      "program": "d:/c++/c/c++/jd/grafy/build/Debug/outDebug",
+      "cwd": "d:/c++/c/c++/jd/grafy/dfs",
+      "program": "d:/c++/c/c++/jd/grafy/dfs/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
