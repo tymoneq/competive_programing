@@ -5,7 +5,7 @@ using namespace std;
 int main()
 {
     int n, zakres_start, zakres_stop, przecinek, zakres;
-    double a;
+    double a, b;
     string file_name;
     ofstream file;
     srand(time(NULL));
@@ -13,21 +13,23 @@ int main()
     cin >> n >> zakres_start >> zakres_stop >> przecinek >> file_name;
     file_name += ".txt";
     file.open(file_name);
-    file.precision(przecinek);
+    // file.precision(przecinek);
     if (zakres_start < 0)
     {
         zakres = zakres_start * -1 + zakres_stop;
     }
     else
         zakres = zakres_start + zakres_stop;
-    zakres = zakres * pow(10, przecinek);
-
+    // zakres = zakres * pow(10, przecinek);
+    int prec = pow(10, przecinek);
     for (int i = 0; i < n; i++)
     {
 
-        a = ((rand() % zakres) - zakres / 2) / pow(10, przecinek);
-        //cout << a << "\n";
-        file << a << " ";
+        a = rand() % zakres - abs(zakres_start);
+
+        b = rand() % prec;
+        
+        file << a << "." << b << " ";
         Sleep(10);
     }
     file.close();
