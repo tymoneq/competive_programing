@@ -13,7 +13,7 @@ int main()
     vector<vector<int>> V(n);
     vector<int> max_rows;
     vector<int> max_cols;
-    vector<pair<int, int>> has_value;
+    
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < m; j++)
@@ -37,7 +37,7 @@ int main()
             }
         }
         max_rows.push_back(max_row);
-        has_value.push_back(make_pair(jj, i));
+        
     }
 
     for (int i = 0; i < m; i++)
