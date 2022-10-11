@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "h:/c++Freecode",
-      "program": "h:/c++Freecode/rosster.exe",
+      "cwd": "d:/c++/c/c++/szkoła/sprawdzian",
+      "program": "d:/c++/c/c++/szkoła/sprawdzian/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
