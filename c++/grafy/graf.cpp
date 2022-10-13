@@ -32,26 +32,26 @@ int main()
         graf[b].push_back(a);
     }
 
-    // dfs(0, graf);
+    dfs(0, graf);
     // bfs
-    vector<int> q;
-    q.push_back(0);
-    visited[0] = true;
-    for (int i = 0; i < (int)q.size(); i++)
-    {
-        int a = q[i];
-        cout << "bfs " << a << " odległość " << odl[a] << "\n";
+    // vector<int> q;
+    // q.push_back(0);
+    // visited[0] = true;
+    // for (int i = 0; i < (int)q.size(); i++)
+    // {
+    //     int a = q[i];
+    //     cout << "bfs " << a << " odległość " << odl[a] << "\n";
 
-        for (int b : graf[a])
-        {
-            if (!visited[b])
-            {
-                odl[b] = odl[a] + 1;
-                visited[b] = true;
-                q.push_back(b);
-            }
-        }
-    }
+    //     for (int b : graf[a])
+    //     {
+    //         if (!visited[b])
+    //         {
+    //             odl[b] = odl[a] + 1;
+    //             visited[b] = true;
+    //             q.push_back(b);
+    //         }
+    //     }
+    // }
     // dijkstra
     return 0;
 }
