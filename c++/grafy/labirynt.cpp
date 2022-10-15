@@ -45,80 +45,78 @@ int main()
         pair<int, int> index;
         index = Q.front();
         Q.pop();
-        if (!visited[index.first][index.second])
+
+        if (G[index.first - 1][index.second] == -1)
         {
-            if (G[index.first - 1][index.second] == -1)
-            {
-                visited[index.first - 1][index.second] = true;
-            }
-            else if (G[index.first][index.second - 1] == -1)
-            {
-                visited[index.first][index.second - 1] = true;
-            }
-            else if (G[index.first + 1][index.second] == -1)
-            {
-                visited[index.first + 1][index.second] = true;
-            }
-            else if (G[index.first][index.second + 1] == -1)
-            {
-                visited[index.first][index.second + 1] = true;
-            }
+            visited[index.first - 1][index.second] = true;
+        }
+        if (G[index.first][index.second - 1] == -1)
+        {
+            visited[index.first][index.second - 1] = true;
+        }
+        if (G[index.first + 1][index.second] == -1)
+        {
+            visited[index.first + 1][index.second] = true;
+        }
+        if (G[index.first][index.second + 1] == -1)
+        {
+            visited[index.first][index.second + 1] = true;
+        }
 
-            /*
-            ####################################################
-            */
+        /*
+        ####################################################
+        */
 
-            if (G[index.first - 1][index.second] == 1)
-            {
-                visited[index.first - 1][index.second] = true;
-                Q.push(make_pair(index.first - 1, index.second));
-                P[index.first - 1][index.second] = 1 + P[index.first][index.second];
-            }
-            else if (G[index.first][index.second - 1] == 1)
-            {
-                visited[index.first][index.second - 1] = true;
-                Q.push(make_pair(index.first, index.second - 1));
-                P[index.first][index.second - 1] = 1 + P[index.first][index.second];
-            }
-            else if (G[index.first + 1][index.second] == 1)
-            {
-                visited[index.first + 1][index.second] = true;
-                Q.push(make_pair(index.first + 1, index.second));
-                P[index.first + 1][index.second] = 1 + P[index.first][index.second];
-            }
-            else if (G[index.first][index.second + 1] == 1)
-            {
-                visited[index.first][index.second + 1] = true;
-                Q.push(make_pair(index.first, index.second + 1));
-                P[index.first][index.second + 1] = 1 + P[index.first][index.second];
-            }
-            /*
-                    ####################################################
-                    */
-            if (G[index.first - 1][index.second] == 10)
-            {
-                visited[index.first - 1][index.second] = true;
-                P[index.first - 1][index.second] = P[index.first][index.second] + 1;
-                break;
-            }
-            else if (G[index.first][index.second - 1] == 10)
-            {
-                visited[index.first][index.second - 1] = true;
-                P[index.first][index.second - 1] = P[index.first][index.second] + 1;
-                break;
-            }
-            else if (G[index.first + 1][index.second] == 10)
-            {
-                visited[index.first + 1][index.second] = true;
-                P[index.first + 1][index.second] = P[index.first][index.second] + 1;
-                break;
-            }
-            else if (G[index.first][index.second + 1] == 10)
-            {
-                visited[index.first][index.second + 1] = true;
-                P[index.first][index.second + 1] = P[index.first][index.second] + 1;
-                break;
-            }
+        if (G[index.first - 1][index.second] == 1)
+        {
+            visited[index.first - 1][index.second] = true;
+            Q.push(make_pair(index.first - 1, index.second));
+            P[index.first - 1][index.second] = 1 + P[index.first][index.second];
+        }
+        if (G[index.first][index.second - 1] == 1)
+        {
+            visited[index.first][index.second - 1] = true;
+            Q.push(make_pair(index.first, index.second - 1));
+            P[index.first][index.second - 1] = 1 + P[index.first][index.second];
+        }
+        if (G[index.first + 1][index.second] == 1)
+        {
+            visited[index.first + 1][index.second] = true;
+            Q.push(make_pair(index.first + 1, index.second));
+            P[index.first + 1][index.second] = 1 + P[index.first][index.second];
+        }
+        if (G[index.first][index.second + 1] == 1)
+        {
+            visited[index.first][index.second + 1] = true;
+            Q.push(make_pair(index.first, index.second + 1));
+            P[index.first][index.second + 1] = 1 + P[index.first][index.second];
+        }
+        /*
+                ####################################################
+                */
+        if (G[index.first - 1][index.second] == 10)
+        {
+            visited[index.first - 1][index.second] = true;
+            P[index.first - 1][index.second] = P[index.first][index.second] + 1;
+            break;
+        }
+        if (G[index.first][index.second - 1] == 10)
+        {
+            visited[index.first][index.second - 1] = true;
+            P[index.first][index.second - 1] = P[index.first][index.second] + 1;
+            break;
+        }
+        if (G[index.first + 1][index.second] == 10)
+        {
+            visited[index.first + 1][index.second] = true;
+            P[index.first + 1][index.second] = P[index.first][index.second] + 1;
+            break;
+        }
+        if (G[index.first][index.second + 1] == 10)
+        {
+            visited[index.first][index.second + 1] = true;
+            P[index.first][index.second + 1] = P[index.first][index.second] + 1;
+            break;
         }
     }
 
