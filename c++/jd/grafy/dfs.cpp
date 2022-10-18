@@ -28,11 +28,29 @@ int main()
         G[a].push_back(b);
         G[b].push_back(a);
     }
-    dfs(0, visted, G);
+    // dfs(0, visted, G);
+
+    stack<int> S;
+    S.push(0);
+    visted[0] = true;
+    while (!S.empty())
+    {
+        int a = S.top();
+        S.pop();
+
+        for (auto el : G[a])
+        {
+            if (!visted[el])
+            {
+                S.push(el);
+                visted[el] = true;
+            }
+        }
+    }
     for (auto el : visted)
     {
-
         cout << el << " ";
     }
+
     return 0;
 }
