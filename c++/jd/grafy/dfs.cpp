@@ -29,7 +29,7 @@ int main()
         G[b].push_back(a);
     }
     // dfs(0, visted, G);
-
+    //  using stack
     stack<int> S;
     S.push(0);
     visted[0] = true;
