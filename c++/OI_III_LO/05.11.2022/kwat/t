@@ -1,0 +1,2 @@
+[&](int &a, int &b)
+              { return m[a] - arr[a][colIdx] > m[b] - arr[b][colIdx]; });
