@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
- 
+// By JD
 using namespace std;
  
 const int infty = numeric_limits<int>::max(); // uwaga na limit
