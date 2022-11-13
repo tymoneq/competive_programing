@@ -1,12 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
-inline int max(int a, int b) { return (a > b) ? a : b; }
 int knapStack(int W, vector<pair<int, int>> &obj, int n)
 {
     vector<vector<int>> K(n + 1, vector<int>(W + 1));
     for (int i = 0; i <= n; i++)
     {
-        for (int w=0; w <= W; w++)
+        for (int w = 0; w <= W; w++)
         {
             if (i == 0 || w == 0)
                 K[i][w] = 0;
