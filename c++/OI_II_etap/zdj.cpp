@@ -10,7 +10,7 @@ void dfs(int &l, vector<vector<int>> &G, vector<pair<int, int>> &Photos, vector<
 
     for (int b : G[v])
     {
-        if (!Visited[b] && b != 2 && G[b].size() <= l * 2)
+        if (!Visited[b] && b != 2 && G[b].size() <= l * 2) 
         {
             int vis = 0, not_vis = 0;
             for (int u : G[b])
