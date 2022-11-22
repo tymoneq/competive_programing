@@ -33,7 +33,7 @@ int main()
     }
 
     dfs(0, graf);
-    bfs
+    //bfs
     vector<int> q;
     q.push_back(0);
     visited[0] = true;
