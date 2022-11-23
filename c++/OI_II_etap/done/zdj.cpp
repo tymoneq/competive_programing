@@ -31,6 +31,29 @@ void photos(int &l, vector<vector<int>> &G, vector<pair<int, int>> &Photos, vect
         }
     }
 }
+// sprawdzenie czy graf jest spójny
+void dfs(int V, vector<bool> &visited, vector<vector<int>> &G)
+{
+    visited[V] = 1;
+    for (int b : G[V])
+        if (!visited[b])
+            dfs(b, visited, G);
+}
+bool connected_graph(int V, vector<bool> visited, vector<vector<int>> &G, vector<int> &Add_kras, bool &more_than_two)
+{
+    dfs(V, visited, G);
+    bool connect_G = true;
+    for (int i = 1; i < visited.size(); i++)
+        if (!visited[i])
+        {
+            Add_kras.push_back(i);
+            connect_G = false;
+            if (G[i].size() >= 1) // sprawdzanie czy wierzchołki nie są połączone
+                more_than_two = true;
+        }
+    return connect_G;
+}
+
 inline bool sorto(pair<int, int> lhs, pair<int, int> rhs) { return lhs.second < rhs.second; }
 int main()
 {
@@ -47,45 +70,40 @@ int main()
         Graph[a].push_back(b);
         Graph[b].push_back(a);
     }
-    vector<pair<int, int>> Photos;
+    vector<int> Add_kr;
     vector<bool> Visited(n + 1, 0);
-    int l = 1;
-    int licznik = 1;
-    // skierowanie grafu
-    // vector<vector<int>> Direc_Graph(n + 1);
-    // vector<bool> visited(n + 1, 0);
-    // vector<bool> waiting(n + 1, 0);
-    // vector<int> Edges(n + 1, 0);
-    // queue<int> Q;
-    // Q.push(1);
-    // while (!Q.empty())
-    // {
-    //     int v = Q.front();
-    //     Q.pop();
-    //     if (v == 2)
-    //         continue;
-    //     visited[v] = 1;
-    //     waiting[v] = 0;
-    //     for (int b : Graph[v])
-    //     {
-    //         if (!visited[b] && !waiting[b])
-    //         {
-    //             Q.push(b);
-    //             Direc_Graph[v].push_back(b);
-    //             waiting[b] = 1;
-    //         }
-    //         else if (!visited[b] && waiting[b])
-    //             Direc_Graph[v].push_back(b);
-    //     }
-    // }
-
-    photos(l, Graph, Photos, Visited, 1, n);
-    if (Photos.size() == n)
+    vector<pair<int, int>> Photos;
+    bool more_than_two = false;
+    int l = 1, N = n;
+    auto connect_G = connected_graph(1, Visited, Graph, Add_kr, more_than_two);
+    if (!more_than_two)
     {
-        cout << "TAK\n";
-        sort(Photos.begin(), Photos.end(), sorto);
-        for (auto el : Photos)
-            cout << el.first << " ";
+        if (!connect_G)
+            N -= Add_kr.size();
+        photos(l, Graph, Photos, Visited, 1, N);
+        if (Photos.size() == n)
+        {
+            cout << "TAK\n";
+            sort(Photos.begin(), Photos.end(), sorto);
+            for (auto el : Photos)
+                cout << el.first << " ";
+        }
+        else if (!connect_G && Photos.size() + Add_kr.size() == n)
+        {
+            cout << "TAK\n";
+            int tmp = 0;
+            for (int i = Photos.size() + 1; i <= n; i++)
+            {
+                Photos.push_back(make_pair(i, Add_kr[tmp]));
+                tmp += 1;
+            }
+
+            sort(Photos.begin(), Photos.end(), sorto);
+            for (auto el : Photos)
+                cout << el.first << " ";
+        }
+        else
+            cout << "NIE";
     }
     else
         cout << "NIE";
