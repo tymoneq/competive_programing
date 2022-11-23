@@ -62,7 +62,7 @@ int main()
     cout.tie(0);
     int n, m;
     cin >> n >> m;
-    vector<vector<int>> Graph(n + 1);
+    vector<vector<int>> Graph(n + 1); // Stworzenie listy sąsiedzctwa i wczytanie grafu 
     for (int i = 0; i < m; i++)
     {
         int a, b;
