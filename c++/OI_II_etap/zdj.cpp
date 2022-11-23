@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void dfs(int &l, vector<vector<int>> &G, vector<pair<int, int>> &Photos, vector<bool> &Visited, int v, int n)
+void photos(int &l, vector<vector<int>> &G, vector<pair<int, int>> &Photos, vector<bool> &Visited, int v, int n)
 {
 
     Photos.push_back(make_pair(l, v));
@@ -20,7 +20,7 @@ void dfs(int &l, vector<vector<int>> &G, vector<pair<int, int>> &Photos, vector<
             if (vis - not_vis == 0 && vis <= l)
             {
                 l += 1;
-                dfs(l, G, Photos, Visited, b, n);
+                photos(l, G, Photos, Visited, b, n);
             }
         }
 
@@ -52,7 +52,7 @@ int main()
     int l = 1;
     int licznik = 1;
 
-    dfs(l, Graph, Photos, Visited, 1, n);
+    photos(l, Graph, Photos, Visited, 1, n);
     if (Photos.size() == n)
     {
         cout << "TAK\n";
