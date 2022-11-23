@@ -39,7 +39,7 @@ void dfs(int V, vector<bool> &visited, vector<vector<int>> &G)
         if (!visited[b])
             dfs(b, visited, G);
 }
-bool connected_graph(int V, vector<bool> visited, vector<vector<int>> &G, vector<int> &Add_kras)
+bool connected_graph(int V, vector<bool> visited, vector<vector<int>> &G, vector<int> &Add_kras, bool &more_than_two)
 {
     dfs(V, visited, G);
     bool connect_G = true;
@@ -48,9 +48,12 @@ bool connected_graph(int V, vector<bool> visited, vector<vector<int>> &G, vector
         {
             Add_kras.push_back(i);
             connect_G = false;
+            if (G[i].size() >= 1) // sprawdzanie czy wierzchołki nie są połączone
+                more_than_two = true;
         }
     return connect_G;
 }
+
 inline bool sorto(pair<int, int> lhs, pair<int, int> rhs) { return lhs.second < rhs.second; }
 int main()
 {
@@ -70,31 +73,37 @@ int main()
     vector<int> Add_kr;
     vector<bool> Visited(n + 1, 0);
     vector<pair<int, int>> Photos;
+    bool more_than_two = false;
     int l = 1, N = n;
-    auto connect_G = connected_graph(1, Visited, Graph, Add_kr);
-    if (!connect_G)
-        N -= Add_kr.size();
-    photos(l, Graph, Photos, Visited, 1, N);
-    if (Photos.size() == n)
+    auto connect_G = connected_graph(1, Visited, Graph, Add_kr, more_than_two);
+    if (!more_than_two)
     {
-        cout << "TAK\n";
-        sort(Photos.begin(), Photos.end(), sorto);
-        for (auto el : Photos)
-            cout << el.first << " ";
-    }
-    else if (!connect_G && Photos.size() + Add_kr.size() == n)
-    {
-        cout << "TAK\n";
-        int tmp = 0;
-        for (int i = Photos.size() + 1; i <= n; i++)
+        if (!connect_G)
+            N -= Add_kr.size();
+        photos(l, Graph, Photos, Visited, 1, N);
+        if (Photos.size() == n)
         {
-            Photos.push_back(make_pair(i, Add_kr[tmp]));
-            tmp += 1;
+            cout << "TAK\n";
+            sort(Photos.begin(), Photos.end(), sorto);
+            for (auto el : Photos)
+                cout << el.first << " ";
         }
+        else if (!connect_G && Photos.size() + Add_kr.size() == n)
+        {
+            cout << "TAK\n";
+            int tmp = 0;
+            for (int i = Photos.size() + 1; i <= n; i++)
+            {
+                Photos.push_back(make_pair(i, Add_kr[tmp]));
+                tmp += 1;
+            }
 
-        sort(Photos.begin(), Photos.end(), sorto);
-        for (auto el : Photos)
-            cout << el.first << " ";
+            sort(Photos.begin(), Photos.end(), sorto);
+            for (auto el : Photos)
+                cout << el.first << " ";
+        }
+        else
+            cout << "NIE";
     }
     else
         cout << "NIE";
