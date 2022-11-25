@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <cstdio>
 using namespace std;
 typedef unsigned long long ull;
 struct distances_between
@@ -10,22 +11,12 @@ struct distances_between
     ull right_licznik = 0;
     int right_mian = 0;
 };
-void lower(distances_between &el)
+void lower(pair<ull, int> &el)
 {
-    while (el.licz % 2 == 0 && el.mian != 1)
+    while (el.first % 2 == 0 && el.second != 1)
     {
-        el.licz /= 2;
-        el.mian /= 2;
-    }
-    while (el.left_licznik % 2 == 0 && el.left_mian != 1)
-    {
-        el.left_licznik /= 2;
-        el.left_mian /= 2;
-    }
-    while (el.right_licznik % 2 == 0 && el.right_mian != 1)
-    {
-        el.right_licznik /= 2;
-        el.right_mian /= 2;
+        el.first /= 2;
+        el.second /= 2;
     }
 }
 ull Euklides(ull a, ull b)
@@ -67,7 +58,7 @@ int main()
     cout.tie(0);
     int n, X, z, a, N, prev = 0, current = 0;
     cin >> n >> X >> z;
-    // wczytanie danych
+    //  wczytanie danych
     distances_between ds_b;
     vector<pair<ull, int>> res; // first licznik second mianownik
     distances_between ds_left;
@@ -85,7 +76,6 @@ int main()
             ds_b.left_mian = 1;
             ds_b.right_licznik = current;
             ds_b.right_mian = 1;
-            lower(ds_b);
             pq.push(ds_b);
         }
         else if (i == n - 1)
@@ -96,7 +86,6 @@ int main()
             ds_b.left_mian = 1;
             ds_b.right_licznik = 0;
             ds_b.right_mian = 1;
-            lower(ds_b);
             pq.push(ds_b);
         }
         prev = current;
@@ -121,7 +110,6 @@ int main()
                     ds_right.right_mian = 1;
                     ds_right.licz = ds_b.licz;
                     ds_right.mian = 2 * ds_b.mian;
-                    lower(ds_right);
                     pq.push(ds_right);
                 }
                 else
@@ -149,14 +137,13 @@ int main()
                     ds_right.licz = ds_b.licz;
                     ds_right.mian = ds_b.mian * 2;
                     //------------------------//
-                    lower(ds_left);
-                    lower(ds_right);
                     pq.push(ds_left);
                     pq.push(ds_right);
                     res.push_back(make_pair(ds_right.left_licznik, ds_right.left_mian));
                 }
                 pq.pop();
             }
+            lower(res[a - 1]);
             cout << res[a - 1].first << "/" << res[a - 1].second << "\n";
         }
     }
