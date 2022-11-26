@@ -109,13 +109,17 @@ int main()
                 pq.pop();
                 distances_between ds_back = pq.top();
                 pq.push(ds_front);
-                for (int j = 0; j <= k; j++)
+                bool find = false;
+                for (int j = 0; j < k;j+=0)
                 {
                     past_10 = 0;
                     ds_left = pq.top();
                     pq.pop();
                     ds_right = pq.top();
-                    max_repeats = ds_left.licz*(ds_right.mian/ds_left.mian) / ds_right.licz;
+                    int nww = NWW(ds_left.mian, ds_right.mian);
+                    int l_m =  nww/ ds_left.mian;
+                    int r_m = nww / ds_right.mian;
+                    max_repeats = ds_left.licz * l_m / (ds_right.licz*r_m);
                     if (ds_left.right_licznik == 0)
                     {
                         past_10 = 1;
@@ -128,16 +132,28 @@ int main()
                     }
                     repeats = pow(2, max_repeats) - 1;
                     j += repeats;
-                    if (j >k)
+                    if (j >= k)
                     {
+
                         index = j - k + past_10;
-                        licznik += (index-1) * 2;
-                        res.first = licznik * ds_left.licz;
-                        res.second = repeats * ds_left.mian;
+                        licznik += index  * 2;
+                        mian = pow(2, max_repeats);
+                        res.first = (ds_left.right_licznik - ds_left.left_licznik) * licznik;
+
+                        res.second = mian;
+                        find = 1;
                     }
-                    ds_left.mian = pow(2, repeats);
+                    ds_left.mian = pow(2, max_repeats) * ds_left.mian;
                     pq.push(ds_left);
-                    
+                }
+                if (!find)
+                {
+                    ds_left = pq.top();
+                    if (ds_left.left_licznik == ds_front.left_licznik)
+                        res.first = ds_left.licz;
+                    else
+                        res.first = ds_back.left_licznik * ds_left.mian + ds_left.licz;
+                    res.second = ds_left.mian;
                 }
             }
             lower(res);
