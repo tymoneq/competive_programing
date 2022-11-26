@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 typedef unsigned long long ull;
 struct distances_between
@@ -90,7 +89,7 @@ int main()
         ds_b.right_mian = 1;
         pq.push(ds_b);
     }
-    int tmp_log, mian, licznik = 1, max_repeats = 0, repeats = 0, index, past_10=0;
+    int tmp_log, mian, licznik = 1, max_repeats = 0, repeats = 0, index, past_10;
     if (n == 2)
         for (int i = 0; i < z; i++)
         {
@@ -106,13 +105,17 @@ int main()
             }
             else
             {
-
-                for (int j = 0; j < k; j++)
+                distances_between ds_front = pq.top();
+                pq.pop();
+                distances_between ds_back = pq.top();
+                pq.push(ds_front);
+                for (int j = 0; j <= k; j++)
                 {
+                    past_10 = 0;
                     ds_left = pq.top();
                     pq.pop();
                     ds_right = pq.top();
-                    max_repeats = ds_left.licz / ds_right.licz;
+                    max_repeats = ds_left.licz*(ds_right.mian/ds_left.mian) / ds_right.licz;
                     if (ds_left.right_licznik == 0)
                     {
                         past_10 = 1;
@@ -125,15 +128,16 @@ int main()
                     }
                     repeats = pow(2, max_repeats) - 1;
                     j += repeats;
-                    if (j >= k)
+                    if (j >k)
                     {
                         index = j - k + past_10;
-                        licznik += index * 2;
+                        licznik += (index-1) * 2;
                         res.first = licznik * ds_left.licz;
-                        res.second = (repeats + 1) * ds_left.mian;
+                        res.second = repeats * ds_left.mian;
                     }
-                    ds_left.left_mian = pow(2, repeats + 1);
+                    ds_left.mian = pow(2, repeats);
                     pq.push(ds_left);
+                    
                 }
             }
             lower(res);
