@@ -18,18 +18,7 @@ void lower(pair<ull, int> &el)
         el.second /= 2;
     }
 }
-ull Euklides(ull a, ull b)
-{
-    ull tmp;
-    while (a != b && b != 0 && a != 0)
-    {
-        tmp = b;
-        b = a % b;
-        a = tmp;
-    }
-    return a;
-}
-inline ull NWW(ull a, ull b) { return a * b / Euklides(a, b); }
+inline ull NWW(ull a, ull b) { return a * b / min(a, b); }
 template <class distances_between>
 struct myComp
 {
