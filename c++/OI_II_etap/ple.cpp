@@ -1,19 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef unsigned long long ull;
-struct item
-{
-    int weight;
-    int index;
-};
-inline bool sorto(item const &lhs, item const &rhs)
-{
-    if (lhs.weight < rhs.weight)
-        return true;
-    if (lhs.weight == rhs.weight && lhs.index < rhs.index)
-        return true;
-    return false;
-}
+typedef long long ll;
+inline bool sorto(pair<ll, int> &lhs, pair<ll, int> &rhs) { return lhs.first > rhs.first; }
 int main()
 {
     ios_base::sync_with_stdio(0);
@@ -21,54 +9,38 @@ int main()
     cout.tie(0);
     int n, a;
     cin >> n;
-    vector<item> Weight(n);
-    item it;
-    vector<ull> res;
-    vector<ull> Stan(n, 0);
-    ull sum = 0;
-    int min_index = 0;
+    vector<int> Weight(n);
+    vector<ll> res;
+    vector<ll> Pref(n, 0);
+    ll sum = 0;
     for (int i = 0; i < n; i++)
     {
-        cin >> it.weight;
-        it.index = i;
-        Weight[i] = it;
+        cin >> Weight[i];
+        sum += Weight[i];
     }
-    sort(Weight.begin(), Weight.end(), sorto);
-    res.push_back(Weight[0].weight);
-    sum = Weight[0].weight;
-    for (int i = Weight[0].index; i < n; i++)
-        Stan[i] = Weight[0].weight;
-
-    Weight.erase(Weight.begin());
-    ull last_el = 0;
-    vector<item>::iterator iter;
+    res.push_back(sum);
+    vector<pair<ll, int>> l_sums;
     for (int i = 1; i < n; i++)
     {
-        iter = Weight.begin();
-        it = Weight[0];
-        sum += it.weight;
-        last_el = it.weight;
-        for (int j = 1; j < Weight.size() - 1; j++)
+        for (int j = 0; j < n; j++)
         {
-            if (Weight[j].index < it.index && Weight[j].weight + Stan[Weight[j].index] <= sum)
+            ll left_sum = 0;
+            for (int k = j + 1; k < n; k++)
             {
-                sum -= last_el;
-                sum += Weight[j].weight;
-                last_el = Weight[j].weight;
-                iter++;
+                left_sum += Weight[k];
+                if ((Weight[j] - left_sum) <= 0)
+                    break;
             }
-            if (Weight[j].index == min_index)
-            {
-                min_index++;
-                break;
-            }
+            if (Weight[j] - left_sum > 0)
+                l_sums.push_back(make_pair(left_sum, j));
         }
-        for (int j = (*iter).index; j < n; j++)
-            Stan[j] += (*iter).weight;
-        res.push_back(sum);
-        Weight.erase(iter);
+        sort(l_sums.begin(), l_sums.end(), sorto);
+        auto el = l_sums[0];
+        res.push_back(res[i - 1] - Weight[el.second]);
+        Weight[el.second] = 0;
+        l_sums.clear();
     }
-    for (ull el : res)
-        cout << el << " ";
+    for (int i = n-1; i >= 0; i--)
+        cout << res[i] << " ";
     return 0;
 }
