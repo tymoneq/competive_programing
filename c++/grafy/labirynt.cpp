@@ -8,7 +8,7 @@ int main()
     cin >> n >> m;
     int G[n][m]{-1};
     pair<int, int> start, meta;
-    for (int i = 0; i < m; i++)
+    for (int i = 0; i < m; i++) //dodaj test 20 na 20
     {
         string znak;
         cin >> znak;
