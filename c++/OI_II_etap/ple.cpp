@@ -1,29 +1,41 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-ll uptd_val(vector<ll> &Tree, int base, int v, int val, vector<ll> &data)
+void upd(int v, int x, vector<ll> &Tree)
 {
+    Tree[v] = x;
+    int tmp = v / 2;
+    while (tmp > 0)
+    {
+        Tree[tmp] = Tree[tmp * 2] + Tree[tmp * 2 + 1];
+        tmp /= 2;
+    }
+}
+ll get_value(int l, vector<ll> &Tree, int base, int n)
+{
+    ll sum = 0;
+    int val = Tree[l];
+    l += 1;
+    if (l == Tree.size())
+        return 0;
+    int r = base + n;
+    sum += Tree[l];
+    while (l / 2 != r / 2)
+    {
+        if (val - sum <= 0)
+            break;
+        if (l % 2 == 0)
+            sum += Tree[l + 1];
 
-    while (v < base)
-    {
-        if (Tree[2 * v] == val)
-            v *= 2;
-        else
-            v = v * 2 + 1;
+        if (r % 2 == 1)
+            sum += Tree[r - 1];
+        l /= 2;
+        r /= 2;
     }
-    Tree[v] = 0;
-    ll sum = data[v - base + 1];
-    for (int i = base; i < v; i++)
-        Tree[i] += data[v - base + 1];
-    for (int i = v / 2; i > 0; i--)
-    {
-        if (Tree[i * 2] > 0 || Tree[i * 2 + 1] <= 0)
-            Tree[i] = Tree[2 * i];
-        else
-            Tree[i] = Tree[2 * i + 1];
-    }
+
     return sum;
 }
+inline bool my_sort(ll &lhs, ll &rhs) { return lhs < rhs; }
 int main()
 {
     ios_base::sync_with_stdio(0);
@@ -35,41 +47,34 @@ int main()
     if (!(pow(2, base) == n))
         base++;
     base = pow(2, base);
-    vector<ll> data(n + 1);
     vector<ll> Tree(base * 2);
-    vector<ll> res(n);
+    vector<ll> res;
     ll sum = 0;
-    int a;
-    for (int i = 1; i <= n; i++)
-    {
-        cin >> data[i];
-        sum += data[i];
-    }
-
-    int index = 1;
-    ll prev_sum = 0;
     for (int i = base; i < base + n; i++)
-    {
-        Tree[i] = data[index] - sum + data[index] + prev_sum;
-        prev_sum += data[index];
-        index++;
-    }
-    for (int i = base - 1; i > 0; i--)
-    {
-        if (Tree[i * 2] > 0 || Tree[i * 2 + 1] == 0)
-            Tree[i] = Tree[2 * i];
-        else
-            Tree[i] = Tree[2 * i + 1];
-    }
+        cin >> Tree[i];
 
-    res[0] = sum;
+    for (int i = base - 1; i > 0; i--)
+        Tree[i] = Tree[2 * i] + Tree[2 * i + 1];
+
+    sum = Tree[1];
+    res.push_back(sum);
     for (int i = 1; i < n; i++)
     {
-        ll tmp = uptd_val(Tree, base, 1, Tree[1], data);
-        res[i] = res[i - 1] - tmp;
+        for (int j = base; j < base + n; j++)
+        {
+            if (Tree[j] == 0)
+                continue;
+            ll left_sum = get_value(j, Tree, base, n);
+            if (Tree[j] - left_sum > 0)
+            {
+                res.push_back(res[i - 1] - Tree[j]);
+                upd(j, 0, Tree);
+                break;
+            }
+        }
     }
-
-    for (int i = n - 1; i >= 0; i--)
+    sort(res.begin(), res.end(), my_sort);
+    for (int i = 0; i < n; i++)
         cout << res[i] << " ";
     return 0;
 }
