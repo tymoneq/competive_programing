@@ -11,16 +11,16 @@ void upd(int v, int x, vector<int> &Tree)
         tmp /= 2;
     }
 }
-int get_value(int l, int r, vector<int> &Tree)
+int get_value(int l, int r, vector<int> &Tree, int base)
 {
     int sum = 0;
     l -= 1;
     r += 1;
-    if (l == -1 && r == Tree.size())
+    if (l == base - 1 && r == Tree.size())
         sum = Tree[1];
     else
     {
-        if (l == -1)
+        if (l == base - 1)
         {
             while (r / 2 != 1)
             {
@@ -65,7 +65,7 @@ int main()
     int tmp = log2(n);
     int base = pow(2, tmp);
     if (base != n)
-        base++;
+        base = pow(2, tmp + 1);
     vector<int> Tree(base * 2);
     for (int i = base; i < base + n; i++)
         cin >> Tree[i];
@@ -76,6 +76,6 @@ int main()
         Tree[i] = suma;
     }
     upd(11, -10, Tree);
-    int sum = get_value(11, 15, Tree);
+    int sum = get_value(11, 15, Tree, base);
     return 0;
 }
