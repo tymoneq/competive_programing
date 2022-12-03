@@ -13,14 +13,14 @@ int main()
         int n, a;
         cin >> n;
         vector<pair<int, int>> Data(n + 1);
-        vector<vector<int>> Graph(n + 1);
         for (int j = 1; j <= n; j++)
         {
             cin >> a;
-            Graph[a].push_back(j);
             Data[a] = make_pair(Data[a].first + 1, a);
         }
         int tmp = 0;
+        if (n % 2 == 1)
+            tmp = 1;
         sort(Data.begin(), Data.end(), sortoo);
         cout << Data[0].first + 1 + tmp << "\n";
     }
