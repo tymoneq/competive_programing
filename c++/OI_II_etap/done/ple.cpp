@@ -32,6 +32,7 @@ ll get_value(int l, vector<ll> &Tree, int base, int n)
         l /= 2;
         r /= 2;
     }
+
     return sum;
 }
 inline bool my_sort(ll &lhs, ll &rhs) { return lhs < rhs; }
@@ -47,7 +48,7 @@ int main()
         base++;
     base = pow(2, base);
     vector<ll> Tree(base * 2);
-    vector<ll> res(n);
+    vector<ll> res;
     ll sum = 0;
     for (int i = base; i < base + n; i++)
         cin >> Tree[i];
@@ -56,8 +57,9 @@ int main()
         Tree[i] = Tree[2 * i] + Tree[2 * i + 1];
 
     sum = Tree[1];
-    res[0] = sum;
+    res.push_back(sum);
     for (int i = 1; i < n; i++)
+    {
         for (int j = base; j < base + n; j++)
         {
             if (Tree[j] == 0)
@@ -65,12 +67,12 @@ int main()
             ll left_sum = get_value(j, Tree, base, n);
             if (Tree[j] - left_sum > 0)
             {
-                res[i] = res[i - 1] - Tree[j];
+                res.push_back(res[i - 1] - Tree[j]);
                 upd(j, 0, Tree);
                 break;
             }
         }
-
+    }
     sort(res.begin(), res.end(), my_sort);
     for (int i = 0; i < n; i++)
         cout << res[i] << " ";
