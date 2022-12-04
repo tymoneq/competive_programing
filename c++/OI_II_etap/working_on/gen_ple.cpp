@@ -5,9 +5,9 @@ int main()
 {
     ofstream file;
     file.open("ple3.in");
-    file << 500000 << "\n";
-    for (int i = 0; i < 500000; i++)
+    file << 200 << "\n";
+    for (int i = 0; i < 200; i++)
     {
-        file << i << " ";
+        file << i % 47 + 1 << " ";
     }
 }
