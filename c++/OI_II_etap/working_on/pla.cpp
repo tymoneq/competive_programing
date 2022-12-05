@@ -78,79 +78,7 @@ int main()
         ds_b.right_mian = 1;
         pq.push(ds_b);
     }
-    // int tmp_log, mian, licznik = 1, max_repeats = 0, repeats = 0, index, past_10;
-    // if (n == 2)
-    //     for (int i = 0; i < z; i++)
-    //     {
-    //         cin >> k;
-    //         if (pq.size() == 1)
-    //         {
-    //             tmp_log = log2(k);
-    //             index = k - pow(2, tmp_log);
-    //             licznik += index * 2;
-    //             mian = pow(2, tmp_log) * 2;
-    //             res.first = licznik * X;
-    //             res.second = mian;
-    //         }
-    //         else
-    //         {
-    //             distances_between ds_front = pq.top();
-    //             pq.pop();
-    //             distances_between ds_back = pq.top();
-    //             pq.push(ds_front);
-    //             bool find = false;
-    //             for (int j = 0; j < k;j+=0)
-    //             {
-    //                 past_10 = 0;
-    //                 ds_left = pq.top();
-    //                 pq.pop();
-    //                 ds_right = pq.top();
-    //                 int nww = NWW(ds_left.mian, ds_right.mian);
-    //                 int l_m =  nww/ ds_left.mian;
-    //                 int r_m = nww / ds_right.mian;
-    //                 max_repeats = ds_left.licz * l_m / (ds_right.licz*r_m);
-    //                 if (ds_left.right_licznik == 0)
-    //                 {
-    //                     past_10 = 1;
-    //                     j += 1;
-    //                     ds_left.right_licznik = X;
-    //                     res.first = X;
-    //                     res.second = 1;
-    //                     if (j >= k)
-    //                         break;
-    //                 }
-    //                 repeats = pow(2, max_repeats) - 1;
-    //                 j += repeats;
-    //                 if (j >= k)
-    //                 {
 
-    //                     index = j - k + past_10;
-    //                     licznik += index  * 2;
-    //                     mian = pow(2, max_repeats);
-    //                     res.first = (ds_left.right_licznik - ds_left.left_licznik) * licznik;
-
-    //                     res.second = mian;
-    //                     find = 1;
-    //                 }
-    //                 ds_left.mian = pow(2, max_repeats) * ds_left.mian;
-    //                 pq.push(ds_left);
-    //             }
-    //             if (!find)
-    //             {
-    //                 ds_left = pq.top();
-    //                 if (ds_left.left_licznik == ds_front.left_licznik)
-    //                     res.first = ds_left.licz;
-    //                 else
-    //                     res.first = ds_back.left_licznik * ds_left.mian + ds_left.licz;
-    //                 res.second = ds_left.mian;
-    //             }
-    //         }
-    //         lower(res);
-    //         cout << res.first << "/" << res.second << "\n";
-    //         N = k;
-    //     }
-
-    // else
     for (int i = 0; i < z; i++)
     {
         cin >> k;
