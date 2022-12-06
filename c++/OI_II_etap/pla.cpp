@@ -1,10 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef unsigned long long ull;
-ull fix_dist = 0;
 constexpr ull mian = 1 << 30;
-int fix_calc = 0;
-bool finded = false;
+
 struct beachgoer
 {
     ull distance = 0;
@@ -19,40 +17,21 @@ void lower(pair<ull, ull> &el)
         el.second /= 2;
     }
 }
-void add_new_beachgoer(beachgoer &current_beachgoer, queue<beachgoer> &q, vector<beachgoer> &Plaz, int &i, vector<pair<int, int>> &Inuqiries, vector<pair<int, ull>> &Res)
+void add_new_beachgoer(beachgoer &current_beachgoer, queue<beachgoer> &q, vector<beachgoer> &Plaz)
 {
-    int tmp = current_beachgoer.how_many;
     current_beachgoer.distance /= 2;
     current_beachgoer.how_many *= 2;
-    i += current_beachgoer.how_many - tmp;
-    if (i >= Inuqiries[0].second && !finded)
-    {
-        fix_calc = i - Inuqiries[0].second;
-        fix_dist = current_beachgoer.poz_start * mian + current_beachgoer.distance * (current_beachgoer.how_many - fix_calc);
-        Res.push_back(make_pair(Inuqiries[0].first, fix_dist));
-        Inuqiries.erase(Inuqiries.begin());
-    }
     q.push(current_beachgoer);
     Plaz.erase(Plaz.begin());
 }
-void add_new_beachgoer_2(beachgoer &new_beachgoer, queue<beachgoer> &q, int &i, vector<pair<int, int>> &Inuqiries, vector<pair<int, ull>> &Res)
+void add_new_beachgoer_2(beachgoer &new_beachgoer, queue<beachgoer> &q)
 {
-    int tmp = new_beachgoer.how_many;
     new_beachgoer.distance /= 2;
     new_beachgoer.how_many *= 2;
-    i += new_beachgoer.how_many - tmp;
-    if (i >= Inuqiries[0].second && !finded)
-    {
-        fix_calc = i - Inuqiries[0].second;
-        fix_dist = new_beachgoer.poz_start * mian + new_beachgoer.distance * (new_beachgoer.how_many - fix_calc);
-        Res.push_back(make_pair(Inuqiries[0].first, fix_dist));
-        Inuqiries.erase(Inuqiries.begin());
-    }
     q.push(new_beachgoer);
     q.pop();
 }
 inline bool sort_inquiries(pair<int, int> &lhs, pair<int, int> &rhs) { return lhs.second < rhs.second; }
-inline bool sort_res(pair<int, ull> &lhs, pair<int, ull> &rhs) { return lhs.first < rhs.first; }
 inline bool sort_beachgoer(const beachgoer &lhs, const beachgoer &rhs)
 {
     if (lhs.distance > rhs.distance)
@@ -72,7 +51,7 @@ int main()
     beachgoer current_beachgoer, new_beachgoer;
     vector<beachgoer> Plaz;
     vector<pair<int, int>> Inuqiries(z); // first -> index second -> val
-    vector<pair<int, ull>> Res;          // first -> index second -> val
+    vector<pair<ull, ull>> Res(z);       // first -> index second -> val
     queue<beachgoer> q;
     // preparing date
     for (int i = 0; i < n; i++)
@@ -95,31 +74,10 @@ int main()
     // sorting
     sort(Inuqiries.begin(), Inuqiries.end(), sort_inquiries);
     sort(Plaz.begin(), Plaz.end(), sort_beachgoer);
-    int i = 1;
-    while (i <= Inuqiries[0].second && Inuqiries.size() > 0)
+    int i = 0, calc_positon = 0;
+    ull fix_poz = 0;
+    while (Inuqiries.size() > 0)
     {
-        if (Inuqiries[0].second == i)
-        {
-            if (Plaz.size() == 0)
-            {
-                tmp = q.front().distance / 2 + (q.front().poz_start * mian);
-                Res.push_back(make_pair(Inuqiries[0].first, tmp / 2));
-                Inuqiries.erase(Inuqiries.begin());
-            }
-            else if (q.size() > 0 && q.front().distance > Plaz[0].distance || (q.front().distance == Plaz[0].distance && q.front().poz_start < Plaz[0].poz_start))
-            {
-                tmp = q.front().distance / 2 + (q.front().poz_start * mian);
-                Res.push_back(make_pair(Inuqiries[0].first, tmp));
-                Inuqiries.erase(Inuqiries.begin());
-            }
-            else if (q.front().distance < Plaz[0].distance || (q.size() == 0 || (q.front().distance == Plaz[0].distance && q.front().poz_start > Plaz[0].poz_start)))
-            {
-                tmp = Plaz[0].distance / 2 + (Plaz[0].poz_start * mian);
-                Res.push_back(make_pair(Inuqiries[0].first, tmp));
-                Inuqiries.erase(Inuqiries.begin());
-            }
-            finded = true;
-        }
         if (Plaz.size() > 0)
         {
             current_beachgoer = Plaz[0];
@@ -127,29 +85,72 @@ int main()
             {
                 new_beachgoer = q.front();
                 if (current_beachgoer.distance > new_beachgoer.distance || (current_beachgoer.distance == new_beachgoer.distance && current_beachgoer.poz_start < new_beachgoer.poz_start))
-                    add_new_beachgoer(current_beachgoer, q, Plaz, i, Inuqiries, Res);
+                {
+                    tmp = current_beachgoer.how_many;
+                    i += current_beachgoer.how_many * 2 - tmp;
+                    add_new_beachgoer(current_beachgoer, q, Plaz);
+                    if (i >= Inuqiries[0].second && Inuqiries.size() > 0)
+
+                        while (i >= Inuqiries[0].second && Inuqiries.size() > 0)
+                        {
+                            calc_positon = current_beachgoer.how_many - tmp - (i - Inuqiries[0].second);
+                            fix_poz = current_beachgoer.poz_start * mian + current_beachgoer.distance * (1+2*(calc_positon-1));
+                            Res[Inuqiries[0].first] = (make_pair(fix_poz, mian));
+                            Inuqiries.erase(Inuqiries.begin());
+                        }
+                }
 
                 else if (current_beachgoer.distance < new_beachgoer.distance || (current_beachgoer.distance == new_beachgoer.distance && current_beachgoer.poz_start > new_beachgoer.poz_start))
-                    add_new_beachgoer_2(new_beachgoer, q, i, Inuqiries, Res);
+                {
+                    tmp = new_beachgoer.how_many;
+                    i += new_beachgoer.how_many * 2 - tmp;
+                    add_new_beachgoer_2(new_beachgoer, q);
+                    if (i >= Inuqiries[0].second && Inuqiries.size() > 0)
+                        while (i >= Inuqiries[0].second && Inuqiries.size() > 0)
+                        {
+                            calc_positon = new_beachgoer.how_many - tmp - (i - Inuqiries[0].second);
+                            fix_poz = new_beachgoer.poz_start * mian + new_beachgoer.distance * (1+2*(calc_positon-1));
+                            Res[Inuqiries[0].first] = (make_pair(fix_poz, mian));
+                            Inuqiries.erase(Inuqiries.begin());
+                        }
+                }
             }
             else
-                add_new_beachgoer(current_beachgoer, q, Plaz, i, Inuqiries, Res);
+            {
+                tmp = current_beachgoer.how_many;
+                i += current_beachgoer.how_many * 2 - tmp;
+                add_new_beachgoer(current_beachgoer, q, Plaz);
+                if (i >= Inuqiries[0].second && Inuqiries.size() > 0)
+                    while (i >= Inuqiries[0].second && Inuqiries.size() > 0)
+                    {
+                        calc_positon = current_beachgoer.how_many - tmp - (i - Inuqiries[0].second);
+                        fix_poz = current_beachgoer.poz_start * mian + current_beachgoer.distance * (1+2*(calc_positon-1));
+                        Res[Inuqiries[0].first] = (make_pair(fix_poz, mian));
+                        Inuqiries.erase(Inuqiries.begin());
+                    }
+            }
         }
         else
         {
             new_beachgoer = q.front();
-            add_new_beachgoer_2(new_beachgoer, q, i, Inuqiries, Res);
+            tmp = new_beachgoer.how_many;
+            i += new_beachgoer.how_many * 2 - tmp;
+            add_new_beachgoer_2(new_beachgoer, q);
+            if (i >= Inuqiries[0].second && Inuqiries.size() > 0)
+                while (i >= Inuqiries[0].second && Inuqiries.size() > 0)
+                {
+                    calc_positon = new_beachgoer.how_many - tmp - (i - Inuqiries[0].second);
+                    fix_poz = new_beachgoer.poz_start * mian + new_beachgoer.distance * (1+2*(calc_positon-1));
+                    Res[Inuqiries[0].first] = (make_pair(fix_poz, mian));
+                    Inuqiries.erase(Inuqiries.begin());
+                }
         }
-        finded = false;
     }
-    sort(Res.begin(), Res.end(), sort_res);
-    pair<ull, ull> lowerrr;
+
     for (auto el : Res)
     {
-        lowerrr.first = el.second;
-        lowerrr.second = mian;
-        lower(lowerrr);
-        cout << lowerrr.first << "/" << lowerrr.second << "\n";
+        lower(el);
+        cout << el.first << "/" << el.second << "\n";
     }
 
     return 0;
