@@ -2,8 +2,8 @@
 using namespace std;
 typedef unsigned long long ull;
 constexpr ull mian = 1 << 30;
-ull fix_poz = 0;
-ull calc_positon = 0;
+ull fix_poz = 0, calc_positon = 0;
+int j = 0;
 struct beachgoer
 {
     ull distance = 0;
@@ -26,10 +26,10 @@ inline void add_new_beachgoer_2(beachgoer &new_beachgoer, queue<beachgoer> &q)
 }
 inline void add_to_res(beachgoer &this_beachgoer, ull &tmp, ull &i, vector<pair<ull, ull>> &Inuqiries, vector<pair<ull, ull>> &Res)
 {
-    calc_positon = this_beachgoer.how_many - tmp - (i - Inuqiries[0].second);
+    calc_positon = this_beachgoer.how_many - tmp - (i - Inuqiries[j].second);
     fix_poz = this_beachgoer.poz_start * mian + this_beachgoer.distance * (1 + 2 * (calc_positon - 1));
-    Res[Inuqiries[0].first] = (make_pair(fix_poz, mian));
-    Inuqiries.erase(Inuqiries.begin());
+    Res[Inuqiries[j].first] = (make_pair(fix_poz, mian));
+    j++;
 }
 inline bool sort_inquiries(pair<ull, ull> &lhs, pair<ull, ull> &rhs) { return lhs.second < rhs.second; }
 inline bool sort_beachgoer(const beachgoer &lhs, const beachgoer &rhs)
@@ -74,7 +74,7 @@ int main()
     sort(Inuqiries.begin(), Inuqiries.end(), sort_inquiries);
     sort(Plaz.begin(), Plaz.end(), sort_beachgoer);
     ull i = 0;
-    while (Inuqiries.size() > 0)
+    while (Inuqiries.size() > j)
     {
         if (Plaz.size() > 0)
         {
@@ -87,7 +87,7 @@ int main()
                     tmp = current_beachgoer.how_many;
                     i += current_beachgoer.how_many * 2 - tmp;
                     add_new_beachgoer(current_beachgoer, q, Plaz);
-                    while (Inuqiries.size() > 0 && i >= Inuqiries[0].second)
+                    while (Inuqiries.size() > j && i >= Inuqiries[j].second)
                         add_to_res(current_beachgoer, tmp, i, Inuqiries, Res);
                 }
 
@@ -96,7 +96,7 @@ int main()
                     tmp = new_beachgoer.how_many;
                     i += new_beachgoer.how_many * 2 - tmp;
                     add_new_beachgoer_2(new_beachgoer, q);
-                    while (Inuqiries.size() > 0 && i >= Inuqiries[0].second)
+                    while (Inuqiries.size() > j && i >= Inuqiries[j].second)
                         add_to_res(new_beachgoer, tmp, i, Inuqiries, Res);
                 }
             }
@@ -105,7 +105,7 @@ int main()
                 tmp = current_beachgoer.how_many;
                 i += current_beachgoer.how_many * 2 - tmp;
                 add_new_beachgoer(current_beachgoer, q, Plaz);
-                while (Inuqiries.size() > 0 && i >= Inuqiries[0].second)
+                while (Inuqiries.size() > j && i >= Inuqiries[j].second)
                     add_to_res(current_beachgoer, tmp, i, Inuqiries, Res);
             }
         }
@@ -115,7 +115,7 @@ int main()
             tmp = new_beachgoer.how_many;
             i += new_beachgoer.how_many * 2 - tmp;
             add_new_beachgoer_2(new_beachgoer, q);
-            while (Inuqiries.size() > 0 && i >= Inuqiries[0].second)
+            while (Inuqiries.size() > j && i >= Inuqiries[j].second)
                 add_to_res(new_beachgoer, tmp, i, Inuqiries, Res);
         }
     }
