@@ -122,7 +122,7 @@ int main()
 
     for (auto el : Res)
     {
-        while (el.first % 2 == 0 && el.second != 1)
+        while (el.first % 2 == 0 && el.second != 1) // można spróbować przyśpieszyć
         {
             el.first /= 2;
             el.second /= 2;
