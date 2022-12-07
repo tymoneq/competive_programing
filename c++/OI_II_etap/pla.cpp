@@ -7,17 +7,9 @@ ull calc_positon = 0;
 struct beachgoer
 {
     ull distance = 0;
-    unsigned int poz_start = 0;
+    ull poz_start = 0;
     ull how_many = 0;
 };
-inline void lower(pair<ull, ull> &el)
-{
-    while (el.first % 2 == 0 && el.second != 1)
-    {
-        el.first /= 2;
-        el.second /= 2;
-    }
-}
 inline void add_new_beachgoer(beachgoer &current_beachgoer, queue<beachgoer> &q, vector<beachgoer> &Plaz)
 {
     current_beachgoer.distance /= 2;
@@ -32,14 +24,14 @@ inline void add_new_beachgoer_2(beachgoer &new_beachgoer, queue<beachgoer> &q)
     q.push(new_beachgoer);
     q.pop();
 }
-inline void add_to_res(beachgoer &this_beachgoer, ull &tmp, ull &i, vector<pair<int, ull>> &Inuqiries, vector<pair<ull, ull>> &Res)
+inline void add_to_res(beachgoer &this_beachgoer, ull &tmp, ull &i, vector<pair<ull, ull>> &Inuqiries, vector<pair<ull, ull>> &Res)
 {
     calc_positon = this_beachgoer.how_many - tmp - (i - Inuqiries[0].second);
     fix_poz = this_beachgoer.poz_start * mian + this_beachgoer.distance * (1 + 2 * (calc_positon - 1));
     Res[Inuqiries[0].first] = (make_pair(fix_poz, mian));
     Inuqiries.erase(Inuqiries.begin());
 }
-inline bool sort_inquiries(pair<int, ull> &lhs, pair<int, ull> &rhs) { return lhs.second < rhs.second; }
+inline bool sort_inquiries(pair<ull, ull> &lhs, pair<ull, ull> &rhs) { return lhs.second < rhs.second; }
 inline bool sort_beachgoer(const beachgoer &lhs, const beachgoer &rhs)
 {
     if (lhs.distance > rhs.distance)
@@ -57,7 +49,7 @@ int main()
     cin >> n >> X >> z;
     beachgoer current_beachgoer, new_beachgoer;
     vector<beachgoer> Plaz;
-    vector<pair<int, ull>> Inuqiries(z); // first -> index second -> val
+    vector<pair<ull, ull>> Inuqiries(z); // first -> index second -> val
     vector<pair<ull, ull>> Res(z);       // first -> licznik second -> mian
     queue<beachgoer> q;
     // preparing date
@@ -99,7 +91,7 @@ int main()
                         add_to_res(current_beachgoer, tmp, i, Inuqiries, Res);
                 }
 
-                else if (current_beachgoer.distance < new_beachgoer.distance || (current_beachgoer.distance == new_beachgoer.distance && current_beachgoer.poz_start > new_beachgoer.poz_start))
+                else
                 {
                     tmp = new_beachgoer.how_many;
                     i += new_beachgoer.how_many * 2 - tmp;
@@ -130,7 +122,11 @@ int main()
 
     for (auto el : Res)
     {
-        lower(el);
+        while (el.first % 2 == 0 && el.second != 1)
+        {
+            el.first /= 2;
+            el.second /= 2;
+        }
         cout << el.first << "/" << el.second << "\n";
     }
 
