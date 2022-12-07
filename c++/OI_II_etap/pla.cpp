@@ -89,12 +89,11 @@ int main()
                     tmp = current_beachgoer.how_many;
                     i += current_beachgoer.how_many * 2 - tmp;
                     add_new_beachgoer(current_beachgoer, q, Plaz);
-                    if (i >= Inuqiries[0].second && Inuqiries.size() > 0)
-
-                        while (i >= Inuqiries[0].second && Inuqiries.size() > 0)
+                    if (Inuqiries.size() > 0 && i >= Inuqiries[0].second)
+                        while (Inuqiries.size() > 0 && i >= Inuqiries[0].second)
                         {
                             calc_positon = current_beachgoer.how_many - tmp - (i - Inuqiries[0].second);
-                            fix_poz = current_beachgoer.poz_start * mian + current_beachgoer.distance * (1+2*(calc_positon-1));
+                            fix_poz = current_beachgoer.poz_start * mian + current_beachgoer.distance * (1 + 2 * (calc_positon - 1));
                             Res[Inuqiries[0].first] = (make_pair(fix_poz, mian));
                             Inuqiries.erase(Inuqiries.begin());
                         }
@@ -105,11 +104,11 @@ int main()
                     tmp = new_beachgoer.how_many;
                     i += new_beachgoer.how_many * 2 - tmp;
                     add_new_beachgoer_2(new_beachgoer, q);
-                    if (i >= Inuqiries[0].second && Inuqiries.size() > 0)
-                        while (i >= Inuqiries[0].second && Inuqiries.size() > 0)
+                    if (Inuqiries.size() > 0 && i >= Inuqiries[0].second)
+                        while (Inuqiries.size() > 0 && i >= Inuqiries[0].second)
                         {
                             calc_positon = new_beachgoer.how_many - tmp - (i - Inuqiries[0].second);
-                            fix_poz = new_beachgoer.poz_start * mian + new_beachgoer.distance * (1+2*(calc_positon-1));
+                            fix_poz = new_beachgoer.poz_start * mian + new_beachgoer.distance * (1 + 2 * (calc_positon - 1));
                             Res[Inuqiries[0].first] = (make_pair(fix_poz, mian));
                             Inuqiries.erase(Inuqiries.begin());
                         }
@@ -120,11 +119,11 @@ int main()
                 tmp = current_beachgoer.how_many;
                 i += current_beachgoer.how_many * 2 - tmp;
                 add_new_beachgoer(current_beachgoer, q, Plaz);
-                if (i >= Inuqiries[0].second && Inuqiries.size() > 0)
-                    while (i >= Inuqiries[0].second && Inuqiries.size() > 0)
+                if (Inuqiries.size() > 0 && i >= Inuqiries[0].second)
+                    while (Inuqiries.size() > 0 && i >= Inuqiries[0].second)
                     {
                         calc_positon = current_beachgoer.how_many - tmp - (i - Inuqiries[0].second);
-                        fix_poz = current_beachgoer.poz_start * mian + current_beachgoer.distance * (1+2*(calc_positon-1));
+                        fix_poz = current_beachgoer.poz_start * mian + current_beachgoer.distance * (1 + 2 * (calc_positon - 1));
                         Res[Inuqiries[0].first] = (make_pair(fix_poz, mian));
                         Inuqiries.erase(Inuqiries.begin());
                     }
@@ -136,11 +135,11 @@ int main()
             tmp = new_beachgoer.how_many;
             i += new_beachgoer.how_many * 2 - tmp;
             add_new_beachgoer_2(new_beachgoer, q);
-            if (i >= Inuqiries[0].second && Inuqiries.size() > 0)
-                while (i >= Inuqiries[0].second && Inuqiries.size() > 0)
+            if (Inuqiries.size() > 0 && i >= Inuqiries[0].second)
+                while (Inuqiries.size() > 0 && i >= Inuqiries[0].second)
                 {
                     calc_positon = new_beachgoer.how_many - tmp - (i - Inuqiries[0].second);
-                    fix_poz = new_beachgoer.poz_start * mian + new_beachgoer.distance * (1+2*(calc_positon-1));
+                    fix_poz = new_beachgoer.poz_start * mian + new_beachgoer.distance * (1 + 2 * (calc_positon - 1));
                     Res[Inuqiries[0].first] = (make_pair(fix_poz, mian));
                     Inuqiries.erase(Inuqiries.begin());
                 }
