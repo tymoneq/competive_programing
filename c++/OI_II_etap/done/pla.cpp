@@ -4,6 +4,7 @@ typedef unsigned long long ull;
 constexpr ull mian = 1 << 30;
 ull fix_poz = 0, calc_positon = 0;
 int j = 0;
+int index_plaz = 0;
 struct beachgoer
 {
     ull distance = 0;
@@ -15,7 +16,7 @@ inline void add_new_beachgoer(beachgoer &current_beachgoer, queue<beachgoer> &q,
     current_beachgoer.distance /= 2;
     current_beachgoer.how_many *= 2;
     q.push(current_beachgoer);
-    Plaz.erase(Plaz.begin());
+    index_plaz++;
 }
 inline void add_new_beachgoer_2(beachgoer &new_beachgoer, queue<beachgoer> &q)
 {
@@ -76,9 +77,9 @@ int main()
     ull i = 0;
     while (Inuqiries.size() > j)
     {
-        if (Plaz.size() > 0)
+        if (Plaz.size() > index_plaz)
         {
-            current_beachgoer = Plaz[0];
+            current_beachgoer = Plaz[index_plaz];
             if (q.size() > 0)
             {
                 new_beachgoer = q.front();
