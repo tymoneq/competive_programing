@@ -18,7 +18,6 @@ int main()
     vector<vector<int>> Res(n);
     for (int i = 1; i <= n; i++)
         for (int j = i; j <= n; j += i)
-            if (j <= n)
                 Res[j - 1].push_back(i);
 
     sort(Res.begin(), Res.end(), sort_Res);
