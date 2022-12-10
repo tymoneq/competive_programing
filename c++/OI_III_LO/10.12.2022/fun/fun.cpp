@@ -26,11 +26,15 @@ int main()
         for (int j = el; j <= n; j += el)
             how_many[j] += 1;
 
+    vector<int> Pref_sum(n + 1);
+    for (int i = 1; i <= n; i++)
+    {
+        Pref_sum[i] = Pref_sum[i - 1] + how_many[i];
+    }
     for (int i = 0; i < t; i++)
     {
         cin >> a >> b;
-        for (int j = a; j <= b; j++)
-            res += how_many[j];
+        res = Pref_sum[b] - Pref_sum[a-1];
         cout << res << "\n";
         res = 0;
     }
