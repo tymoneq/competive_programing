@@ -4,48 +4,51 @@ typedef long long ll;
 struct val
 {
     ll val = 0;
-    ll index_1 = 0;
-    ll index_2 = 0;
+    ll num1 = 0;
+    ll num2 = 0;
 };
-inline bool sort_Res(vector<ll> &lhs, vector<ll> &rhs) { return lhs.size() > rhs.size(); }
 
 int main()
 {
     ll n;
     val max_val;
-    ll to_remove = 0;
-    cin >> n;
-    vector<vector<ll>> Res(n);
-    for (ll i = 1; i <= n; i++)
-        for (ll j = i; j <= n; j += i)
-                Res[j - 1].push_back(i);
+    ll  res = 0;
 
-    sort(Res.begin(), Res.end(), sort_Res);
-    for (ll i = 0; i < n - 1; i++)
+    cin >> n;
+    for (ll i = n; i > n / 2; i--)
     {
-        if (max_val.val >= Res[i].size() + Res[i + 1].size())
-            break;
-        for (ll j = i + 1; j <= n - 1; j++)
+        for (int j = i - 1; j >= n / 2; j--)
         {
-            if (max_val.val >= Res[i].size() + Res[j].size())
+            res = 0;
+            if (i % j == 0)
+                continue;
+            if (i == 1 && j == 0)
                 break;
-            for (int num : Res[j])
-                if (binary_search(Res[i].begin(), Res[i].end(), num))
-                    to_remove++;
-            if (max_val.val < Res[i].size() + Res[j].size() - to_remove)
+            for (int k = 1; k * k <= n; k++)
             {
-                max_val.val = Res[i].size() + Res[j].size() - to_remove;
-                max_val.index_1 = i;
-                max_val.index_2 = j;
+                if (i % k == 0 && j % k == 0)
+                    res++;
+                else if (i % k == 0)
+                    res += 1;
+                else if (j % k == 0)
+                    res += 1;
             }
-            to_remove = 0;
+            if (max_val.val < res)
+            {
+                max_val.val = res;
+                max_val.num1 = i;
+                max_val.num2 = j;
+            }
         }
     }
+
     if (max_val.val == 0)
         cout << 1 << "\n"
              << 1 << " " << 1;
     else
+    {
         cout << max_val.val << "\n"
-             << Res[max_val.index_1][Res[max_val.index_1].size() - 1] << " " << Res[max_val.index_2][Res[max_val.index_2].size() - 1];
+             << max_val.num1 << " " << max_val.num2;
+    }
     return 0;
 }
