@@ -57,9 +57,56 @@ int main()
     }
     int wynik = 0;
     for (int i = 0; i < n; i++)
+    {
         if (Res[i] != V[i])
             wynik++;
-    cout << wynik;
+        Res[i] = V[i];
+    }
+    r = 2;
+    l = 0;
+    more = false;
+    while (r < n)
+    {
+        if (more)
+        {
+            if (Res[l] > Res[l + 1])
+            {
+                if (Res[l + 1] >= Res[r])
+                {
+                    if (Res[r] <= Res[r + 1])
+                    {
+                        Res[r] = odp_max;
+                        r++;
+                        l++;
+                        more ^= 1;
+                    }
+                    else
+                        Res[l + 1] = odp_min;
+                }
+            }
+            else if (Res[l] <= Res[l + 1])
+                Res[l + 1] = odp_min;
+        }
+        else if (!more)
+        {
+            if (Res[l] < Res[l + 1])
+            {
+                if (Res[l + 1] <= Res[r])
+                    Res[r] = odp_min;
+            }
+            else if (Res[l] >= Res[l + 1])
+                Res[l] = odp_min;
+        }
+        l++;
+        r++;
+        more ^= 1;
+    }
+    int wynikk = 0;
+    for (int i = 0; i < n; i++)
+        if (Res[i] != V[i])
+            wynikk++;
+
+    cout << min(wynik, wynikk);
 
     return 0;
 }
