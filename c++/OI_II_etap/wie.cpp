@@ -113,8 +113,9 @@ int main()
         }
         ben++;
     }
+    // sortowanie które elementy które najlepiej wybrać
     sort(To_add_right.begin(), To_add_right.end(), sort_vector);
     sort(TO_add_left.begin(), TO_add_left.end(), sort_vector);
-    
+
     return 0;
 }
