@@ -1,43 +1,23 @@
 #include <bits/stdc++.h>
-// Tymon Tumialis
 using namespace std;
+constexpr int MAX_VAL = 20;
 typedef long long ll;
-constexpr int MAX_VAl = 200000;
 
-struct best_choices
-{
-    ll cost = 0;
-    int benefit = 0;
-};
+ll cost_of_move[MAX_VAL];
+int Height_of_element[MAX_VAL];
+ll Right_dominos_which_falls[MAX_VAL];
+ll Left_dominos_which_falls[MAX_VAL];
 
-ll cost_of_move[MAX_VAl];
-ll Height_of_element[MAX_VAl];
-ll Right_dominos_which_falls[MAX_VAl];
-ll Left_dominos_which_falls[MAX_VAl];
-inline bool sort_vector(best_choices &lhs, best_choices &rhs)
-{
-    if (lhs.benefit > rhs.benefit)
-        return true;
-    if (lhs.benefit == rhs.benefit && lhs.cost < rhs.cost)
-        return true;
-
-    return false;
-}
 int main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
-    cout.tie(0);
-    int n, h, h1, h2, ben = 1, res_to_left = 0, res_to_right = 0;
-    best_choices b_ch;
-    ll x, n1, n2, prev = 0, left_range = 0, index_left = 0, right_range = 0, right_index = 0, total_of_new_domins = 0;
-    vector<best_choices> TO_add_left;
-    vector<best_choices> To_add_right;
+    int n, h, H1, H2, res = 0;
+    ll x, N1, N2, prev = 0, current = 0, left_range = 0, index_left = 0, right_range = 0, right_index = 0;
     cin >> n;
     vector<ll> Pref_sum_right(n);
     vector<ll> Pref_sum_left(n);
-    // reading date
-    for (int i = 0; i < MAX_VAl; i++)
+    for (int i = 0; i < MAX_VAL; i++)
     {
         Right_dominos_which_falls[i] = numeric_limits<ll>::max();
         Left_dominos_which_falls[i] = numeric_limits<ll>::max();
@@ -52,9 +32,15 @@ int main()
             cost_of_move[i - 1] = x - prev;
         prev = x;
     }
-    cin >> n1 >> h1 >> n2 >> h2;
-    total_of_new_domins = n1 + n2;
-    // Calculating Pref_sum
+    cin >> N1 >> H1 >> N2 >> H2;
+    if (H1 < H2)
+    {
+        ll tmp = H1, tmp1 = N1;
+        H1 = H2;
+        N1 = N2;
+        N2 = tmp1;
+        H2 = tmp;
+    }
     for (int i = n - 2; i >= 0; i--)
         Pref_sum_left[i] = Pref_sum_left[i + 1] + cost_of_move[i];
 
@@ -90,94 +76,47 @@ int main()
         }
     }
     // indexy są pokazują ile potrzeba żeby dany element się przewrócił !!!!
-    ll cost = 0;
-    for (int i = 1; i < n; i++)
+    int colected = 0, tmp_res = 0;
+    ll H = 0, L = 0, mod_H = 0, mod_l = 0, n1 = N1, n2 = N2; // H-wysokie l -niskie
+    for (int i = 0; i < n - 1; i++)
     {
-        if (Right_dominos_which_falls[i] != 0)
+        colected = 1;
+        for (int j = i + 1; j < n; j++)
         {
-            if (res_to_right == 0)
-            {
-                res_to_right = ben;
-                cost = Right_dominos_which_falls[i];
-            }
+            if (Right_dominos_which_falls[j] == 0)
+                colected++;
             else
             {
-                b_ch.benefit = ben;
-                b_ch.cost = cost;
-                To_add_right.push_back(b_ch);
-                cost = Right_dominos_which_falls[i];
-            }
 
-            ben = 0;
-        }
-        ben++;
-    }
-    ben = 1;
-    for (int i = n - 2; i >= 0; i--)
-    {
-        if (Left_dominos_which_falls[i] != 0)
-        {
-            if (res_to_left == 0)
-            {
-                res_to_left = ben;
-                cost = Left_dominos_which_falls[i];
+                H = Right_dominos_which_falls[j] / H1;
+                mod_H = Right_dominos_which_falls[j] % H1;
+                if (H > n1)
+                {
+                    L = (Right_dominos_which_falls[j] - H1 * n1) / H2;
+                    mod_l = (Right_dominos_which_falls[j] - H1 * n1) % H2;
+                    if (mod_l != 0)
+                        L++;
+                }
+                else if (mod_H != 0)
+                {
+                    L = (Right_dominos_which_falls[j] - H1 * H) / H2;
+                    mod_l = (Right_dominos_which_falls[j] - H1 * H) % H2;
+                    if (mod_l != 0)
+                        L++;
+                }
+                n1 -= H;
+                n2 -= L;
+                if (n1 < 0 || n2 < 0)
+                    break;
+                tmp_res += colected + H + L;
+                colected = 1;
             }
-            else
-            {
-                b_ch.benefit = ben;
-                b_ch.cost = cost;
-                cost = Left_dominos_which_falls[i];
-                TO_add_left.push_back(b_ch);
-            }
-            ben = 0;
         }
-        ben++;
+        n1 = N1;
+        n2 = N2;
+        res = max(res, tmp_res);
+        tmp_res = 0;
     }
-    // sortowanie które elementy które najlepiej wybrać
-    sort(To_add_right.begin(), To_add_right.end(), sort_vector);
-    sort(TO_add_left.begin(), TO_add_left.end(), sort_vector);
-    ll mod = 0;
-    for (int i = 0; i < To_add_right.size(); i++)
-    {
-        if (To_add_right[i].cost <= total_of_new_domins * h1)
-        {
-            res_to_right += To_add_right[i].benefit;
-            mod = To_add_right[i].cost % h1;
-            res_to_right += To_add_right[i].cost / h1;
-            if (mod != 0)
-            {
-                res_to_right += 1;
-                total_of_new_domins -= 1;
-            }
-            total_of_new_domins -= To_add_right[i].cost / h1;
-        }
-        if (total_of_new_domins == 0)
-            break;
-    }
-    if (total_of_new_domins != 0)
-        res_to_right += total_of_new_domins;
-    total_of_new_domins = n1 + n2;
-    for (int i = 0; i < TO_add_left.size(); i++)
-    {
-        if (TO_add_left[i].cost <= total_of_new_domins * h1)
-        {
-            res_to_left += To_add_right[i].benefit;
-            mod = TO_add_left[i].cost % h1;
-            res_to_left += TO_add_left[i].cost / h1;
-            if (mod != 0)
-            {
-                res_to_left += 1;
-                total_of_new_domins -= 1;
-            }
-            total_of_new_domins -= TO_add_left[i].cost / h1;
-        }
-        if (total_of_new_domins == 0)
-            break;
-    }
-    if (total_of_new_domins != 0)
-        res_to_left += total_of_new_domins;
-    if (n == 1)
-        res_to_left++;
-    cout << max(res_to_left, res_to_right);
+    cout << res;
     return 0;
 }
