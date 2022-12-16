@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-constexpr int MAX_VAL = 20;
+constexpr int MAX_VAL = 200000;
 typedef long long ll;
 
 ll cost_of_move[MAX_VAL];
@@ -76,8 +76,14 @@ int main()
         }
     }
     // indexy są pokazują ile potrzeba żeby dany element się przewrócił !!!!
-    int colected = 0, tmp_res = 0;
+    int colected = 0, tmp_res = 0, skipped = 0;
     ll H = 0, L = 0, mod_H = 0, mod_l = 0, n1 = N1, n2 = N2; // H-wysokie l -niskie
+    bool new_val = false;
+    if (n == 1)
+    {
+        cout << 1 + N1 + N2;
+        return 0;
+    }
     for (int i = 0; i < n - 1; i++)
     {
         colected = 1;
@@ -87,6 +93,11 @@ int main()
                 colected++;
             else
             {
+                if (!new_val)
+                {
+                    skipped = j;
+                    new_val = 1;
+                }
 
                 H = Right_dominos_which_falls[j] / H1;
                 mod_H = Right_dominos_which_falls[j] % H1;
@@ -104,10 +115,13 @@ int main()
                     if (mod_l != 0)
                         L++;
                 }
+                if (H > n1 && L > n2)
+                {
+                    tmp_res += colected + n1 + n2;
+                    break;
+                }
                 n1 -= H;
                 n2 -= L;
-                if (n1 < 0 || n2 < 0)
-                    break;
                 tmp_res += colected + H + L;
                 colected = 1;
             }
@@ -116,6 +130,58 @@ int main()
         n2 = N2;
         res = max(res, tmp_res);
         tmp_res = 0;
+        i = skipped - 1;
+        new_val = 0, L = 0, H = 0, mod_H = 0, mod_l = 0;
+    }
+
+    for (int i = n - 2; i > 0; i--)
+    {
+        colected = 1;
+        for (int j = i - 1; j >= 0; j--)
+        {
+            if (Left_dominos_which_falls[j] == 0)
+                colected++;
+            else
+            {
+                if (!new_val)
+                {
+                    skipped = j;
+                    new_val = 1;
+                }
+
+                H = Left_dominos_which_falls[j] / H1;
+                mod_H = Right_dominos_which_falls[j] % H1;
+                if (H > n1)
+                {
+                    L = (Left_dominos_which_falls[j] - H1 * n1) / H2;
+                    mod_l = (Left_dominos_which_falls[j] - H1 * n1) % H2;
+                    if (mod_l != 0)
+                        L++;
+                }
+                else if (mod_H != 0)
+                {
+                    L = (Left_dominos_which_falls[j] - H1 * H) / H2;
+                    mod_l = (Left_dominos_which_falls[j] - H1 * H) % H2;
+                    if (mod_l != 0)
+                        L++;
+                }
+                if (H > n1 && L > n2)
+                {
+                    tmp_res += colected + n1 + n2;
+                    break;
+                }
+                n1 -= H;
+                n2 -= L;
+                tmp_res += colected + H + L;
+                colected = 1;
+            }
+        }
+        n1 = N1;
+        n2 = N2;
+        res = max(res, tmp_res);
+        tmp_res = 0;
+        i = skipped - 1;
+        new_val = 0, L = 0, H = 0, mod_H = 0, mod_l = 0;
     }
     cout << res;
     return 0;
