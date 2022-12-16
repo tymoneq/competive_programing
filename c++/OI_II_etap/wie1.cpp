@@ -11,13 +11,12 @@ int main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
-    int n, H1, H2;
+    int n, H1, H2, l = 0, r = 1;
     ll N1, N2, res = 0, tmp_res = 0;
     cin >> n;
     for (int i = 0; i < n; i++)
         cin >> Posiotion[i] >> Height[i];
     cin >> N1 >> H1 >> N2 >> H2;
-
     if (H1 < H2)
     {
         ll tmp_1 = H1, tmp_2 = N1;
