@@ -12,8 +12,8 @@ int main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
-    int n, h, H1, H2, res = 0;
-    ll x, N1, N2, prev = 0, current = 0, left_range = 0, index_left = 0, right_range = 0, right_index = 0;
+    int n, h, H1, H2;
+    ll res = 0, x, N1, N2, prev = 0, current = 0, left_range = 0, index_left = 0, right_range = 0, right_index = 0;
     cin >> n;
     vector<ll> Pref_sum_right(n);
     vector<ll> Pref_sum_left(n);
@@ -76,8 +76,8 @@ int main()
         }
     }
     // indexy są pokazują ile potrzeba żeby dany element się przewrócił !!!!
-    int colected = 0, tmp_res = 0, skipped = 0;
-    ll H = 0, L = 0, mod_H = 0, mod_l = 0, n1 = N1, n2 = N2; // H-wysokie l -niskie
+    int colected = 0, skipped = 0;
+    ll H = 0, L = 0, mod_H = 0, mod_l = 0, n1 = N1, n2 = N2, tmp_res = 0; // H-wysokie l -niskie
     bool new_val = false;
     if (n == 1)
     {
