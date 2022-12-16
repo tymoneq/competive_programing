@@ -1,188 +1,231 @@
 #include <bits/stdc++.h>
-using namespace std;
-constexpr int MAX_VAL = 200000;
-typedef long long ll;
 
-ll cost_of_move[MAX_VAL];
-int Height_of_element[MAX_VAL];
-ll Right_dominos_which_falls[MAX_VAL];
-ll Left_dominos_which_falls[MAX_VAL];
+using namespace std;
+typedef long long ll;
+constexpr int MAX_VAL = 200001;
+
+ll Posiotion[MAX_VAL];
+int Height[MAX_VAL];
 
 int main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
-    int n, h, H1, H2;
-    ll res = 0, x, N1, N2, prev = 0, current = 0, left_range = 0, index_left = 0, right_range = 0, right_index = 0;
+    int n, H1, H2, l = 0, r = 1;
+    ll N1, N2, res = 0, tmp_res = 0;
+    vector<pair<int, int>> To_collect_right; // first początek second koniec przedziału
+    vector<ll> Distans_to_add_right;
+    vector<pair<int, int>> To_collect_left; // first początek second koniec przedziału
+    vector<ll> Distans_to_add_left;
     cin >> n;
-    vector<ll> Pref_sum_right(n);
-    vector<ll> Pref_sum_left(n);
-    for (int i = 0; i < MAX_VAL; i++)
-    {
-        Right_dominos_which_falls[i] = numeric_limits<ll>::max();
-        Left_dominos_which_falls[i] = numeric_limits<ll>::max();
-    }
+    Posiotion[n] = numeric_limits<ll>::max();
     for (int i = 0; i < n; i++)
-    {
-        cin >> x >> h;
-
-        Height_of_element[i] = h;
-        Pref_sum_right[i] = x;
-        if (i != 0)
-            cost_of_move[i - 1] = x - prev;
-        prev = x;
-    }
+        cin >>
+            Posiotion[i] >> Height[i];
     cin >> N1 >> H1 >> N2 >> H2;
-    if (H1 < H2)
-    {
-        ll tmp = H1, tmp1 = N1;
-        H1 = H2;
-        N1 = N2;
-        N2 = tmp1;
-        H2 = tmp;
-    }
-    for (int i = n - 2; i >= 0; i--)
-        Pref_sum_left[i] = Pref_sum_left[i + 1] + cost_of_move[i];
-
-    for (int i = 1; i < n; i++)
-    {
-        left_range = Pref_sum_left[i] + Height_of_element[i];
-        auto itr = lower_bound(Pref_sum_left.begin(), Pref_sum_left.end(), left_range, greater<int>());
-        itr--;
-        index_left = itr - Pref_sum_left.begin();
-        for (auto j = index_left; j < i; j++)
-        {
-            if (Left_dominos_which_falls[j] == 0)
-                break;
-            if (Pref_sum_left[j] - left_range > 0)
-                Left_dominos_which_falls[j] = min(Pref_sum_left[j] - left_range, Left_dominos_which_falls[j]);
-            else
-                Left_dominos_which_falls[j] = 0;
-        }
-    }
-    for (int i = n - 2; i >= 0; i--)
-    {
-        right_range = Pref_sum_right[i] + Height_of_element[i];
-        auto itr = lower_bound(Pref_sum_right.begin(), Pref_sum_right.end(), right_range);
-        right_index = itr - Pref_sum_right.begin();
-        for (int j = right_index; j > i; j--)
-        {
-            if (Right_dominos_which_falls[j] == 0)
-                break;
-            if (Pref_sum_right[j] - right_range > 0)
-                Right_dominos_which_falls[j] = min(Pref_sum_right[j] - right_range, Right_dominos_which_falls[j]);
-            else
-                Right_dominos_which_falls[j] = 0;
-        }
-    }
-    // indexy są pokazują ile potrzeba żeby dany element się przewrócił !!!!
-    int colected = 0, skipped = 0;
-    ll H = 0, L = 0, mod_H = 0, mod_l = 0, n1 = N1, n2 = N2, tmp_res = 0; // H-wysokie l -niskie
-    bool new_val = false;
     if (n == 1)
     {
-        cout << 1 + N1 + N2;
+        cout << n + N1 + N2;
         return 0;
     }
-    for (int i = 0; i < n - 1; i++)
+    if (H1 < H2)
     {
-        colected = 1;
-        for (int j = i + 1; j < n; j++)
+        ll tmp_1 = H1, tmp_2 = N1;
+        N1 = N2;
+        H1 = H2;
+        H2 = tmp_1;
+        N2 = tmp_2;
+    }
+    int glowa = 0, ogon = 0;
+    ll a_range = Height[0] + Posiotion[0];
+    while (glowa < n)
+    {
+        if (max(a_range, Height[glowa] + Posiotion[glowa]) >= Posiotion[glowa + 1])
         {
-            if (Right_dominos_which_falls[j] == 0)
-                colected++;
-            else
+            glowa++;
+            a_range = max(a_range, Height[glowa] + Posiotion[glowa]);
+        }
+        else
+        {
+            a_range = max(a_range, Height[glowa] + Posiotion[glowa]);
+            To_collect_right.push_back(make_pair(ogon, glowa));
+            Distans_to_add_right.push_back(Posiotion[glowa + 1] - a_range);
+            glowa++;
+            ogon = glowa;
+            a_range = 0;
+        }
+    }
+    glowa = n - 1, ogon = n - 1, a_range = Posiotion[n - 1] - Height[n - 1];
+    while (glowa >= 0)
+    {
+        if (glowa == 0)
+        {
+            To_collect_left.push_back(make_pair(glowa, ogon));
+            Distans_to_add_left.push_back(numeric_limits<ll>::max());
+            break;
+        }
+        if (max(a_range, Posiotion[glowa] - Height[glowa]) <= Posiotion[glowa - 1])
+        {
+            glowa--;
+            a_range = max(a_range, Posiotion[glowa] - Height[glowa]);
+        }
+        else
+        {
+            a_range = max(a_range, Posiotion[glowa] - Height[glowa]);
+            To_collect_left.push_back(make_pair(glowa, ogon));
+            Distans_to_add_left.push_back(a_range - Posiotion[glowa - 1]);
+            glowa--;
+            ogon = glowa;
+            a_range = 0;
+        }
+    }
+    ll H, h_mod, L, l_mod, n1, n2;
+    for (int i = 0; i < Distans_to_add_right.size(); i++)
+    {
+        n1 = N1, n2 = N2, H = 0, L = 0, tmp_res = 0;
+        for (int j = i; j < Distans_to_add_right.size(); j++)
+        {
+            tmp_res += To_collect_right[j].second - To_collect_right[j].first + 1;
+            if (j == Distans_to_add_right.size() - 1)
             {
-                if (!new_val)
+                tmp_res += n1 + n2;
+                break;
+            }
+            H = Distans_to_add_right[j] / H1;
+            h_mod = Distans_to_add_right[j] % H1;
+            if (H == 0 && n1 != 0 && n2 * H2 < Distans_to_add_right[j])
+            {
+                H = 1;
+                h_mod = 0;
+            }
+            if (H > n1)
+            {
+                L = (Distans_to_add_right[j] - H1 * n1) / H2;
+                l_mod = (Distans_to_add_right[j] - H1 * n1) % H2;
+                if (l_mod != 0)
+                    L++;
+                if (L > n1)
                 {
-                    skipped = j;
-                    new_val = 1;
+                    if (n1 - H >= 1)
+                    {
+                        H++;
+                        L = 0;
+                    }
+                    else
+                    {
+                        tmp_res += n1 + n2;
+                        break;
+                    }
                 }
-
-                H = Right_dominos_which_falls[j] / H1;
-                mod_H = Right_dominos_which_falls[j] % H1;
-                if (H > n1)
+                tmp_res += n1 + L;
+                n1 = 0;
+                n2 -= L;
+            }
+            else if (h_mod != 0)
+            {
+                L = (Distans_to_add_right[j] - H1 * H) / H2;
+                l_mod = (Distans_to_add_right[j] - H1 * H) % H2;
+                if (l_mod != 0)
+                    L++;
+                if (L > n1)
                 {
-                    L = (Right_dominos_which_falls[j] - H1 * n1) / H2;
-                    mod_l = (Right_dominos_which_falls[j] - H1 * n1) % H2;
-                    if (mod_l != 0)
-                        L++;
+                    if (n1 - H >= 1)
+                    {
+                        H++;
+                        L = 0;
+                    }
+                    else
+                    {
+                        tmp_res += n1 + n2;
+                        break;
+                    }
                 }
-                else if (mod_H != 0)
-                {
-                    L = (Right_dominos_which_falls[j] - H1 * H) / H2;
-                    mod_l = (Right_dominos_which_falls[j] - H1 * H) % H2;
-                    if (mod_l != 0)
-                        L++;
-                }
-                if (H > n1 && L > n2)
-                {
-                    tmp_res += colected + n1 + n2;
-                    break;
-                }
+                tmp_res += H + L;
                 n1 -= H;
                 n2 -= L;
-                tmp_res += colected + H + L;
-                colected = 1;
             }
-        }
-        n1 = N1;
-        n2 = N2;
-        res = max(res, tmp_res);
-        tmp_res = 0;
-        i = skipped - 1;
-        new_val = 0, L = 0, H = 0, mod_H = 0, mod_l = 0;
-    }
-
-    for (int i = n - 2; i > 0; i--)
-    {
-        colected = 1;
-        for (int j = i - 1; j >= 0; j--)
-        {
-            if (Left_dominos_which_falls[j] == 0)
-                colected++;
             else
             {
-                if (!new_val)
-                {
-                    skipped = j;
-                    new_val = 1;
-                }
-
-                H = Left_dominos_which_falls[j] / H1;
-                mod_H = Right_dominos_which_falls[j] % H1;
-                if (H > n1)
-                {
-                    L = (Left_dominos_which_falls[j] - H1 * n1) / H2;
-                    mod_l = (Left_dominos_which_falls[j] - H1 * n1) % H2;
-                    if (mod_l != 0)
-                        L++;
-                }
-                else if (mod_H != 0)
-                {
-                    L = (Left_dominos_which_falls[j] - H1 * H) / H2;
-                    mod_l = (Left_dominos_which_falls[j] - H1 * H) % H2;
-                    if (mod_l != 0)
-                        L++;
-                }
-                if (H > n1 && L > n2)
-                {
-                    tmp_res += colected + n1 + n2;
-                    break;
-                }
+                tmp_res += H;
                 n1 -= H;
-                n2 -= L;
-                tmp_res += colected + H + L;
-                colected = 1;
             }
         }
-        n1 = N1;
-        n2 = N2;
         res = max(res, tmp_res);
-        tmp_res = 0;
-        i = skipped - 1;
-        new_val = 0, L = 0, H = 0, mod_H = 0, mod_l = 0;
     }
+
+    for (int i = 0; i < Distans_to_add_left.size(); i++)
+    {
+        n1 = N1, n2 = N2, H = 0, L = 0, tmp_res = 0;
+        for (int j = i; j < Distans_to_add_left.size(); j++)
+        {
+            tmp_res += To_collect_left[j].second - To_collect_left[j].first + 1;
+            if (j == Distans_to_add_left.size() - 1)
+            {
+                tmp_res += n1 + n2;
+                break;
+            }
+            H = Distans_to_add_left[j] / H1;
+            h_mod = Distans_to_add_left[j] % H1;
+            if (H == 0 && n1 != 0 && n2 * H2 < Distans_to_add_left[j])
+            {
+                H = 1;
+                h_mod = 0;
+            }
+            if (H > n1)
+            {
+                L = (Distans_to_add_left[j] - H1 * n1) / H2;
+                l_mod = (Distans_to_add_left[j] - H1 * n1) % H2;
+                if (l_mod != 0)
+                    L++;
+                if (L > n1)
+                {
+                    if (n1 - H >= 1)
+                    {
+                        H++;
+                        L = 0;
+                    }
+                    else
+                    {
+                        tmp_res += n1 + n2;
+                        break;
+                    }
+                }
+                tmp_res += n1 + L;
+                n1 = 0;
+                n2 -= L;
+            }
+            else if (h_mod != 0)
+            {
+                L = (Distans_to_add_left[j] - H1 * H) / H2;
+                l_mod = (Distans_to_add_left[j] - H1 * H) % H2;
+                if (l_mod != 0)
+                    L++;
+                if (L > n1)
+                {
+                    if (n1 - H >= 1)
+                    {
+                        H++;
+                        L = 0;
+                    }
+                    else
+                    {
+                        tmp_res += n1 + n2;
+                        break;
+                    }
+                }
+                tmp_res += H + L;
+                n1 -= H;
+                n2 -= L;
+            }
+            else
+            {
+                tmp_res += H;
+                n1 -= H;
+            }
+        }
+        res = max(res, tmp_res);
+    }
+
     cout << res;
     return 0;
 }
