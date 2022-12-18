@@ -8,14 +8,19 @@ int main()
     int n, k, res = numeric_limits<int>::max(), res_index = 0, aktual_sum = 0;
     cin >> n >> k;
     vector<int> Height(n);
+    vector<int> Pref_sum(n);
     for (int i = 0; i < n; i++)
         cin >> Height[i];
+    Pref_sum[0] = Height[0];
+    for (int i = 1; i < n; i++)
+        Pref_sum[i] = Pref_sum[i - 1] + Height[i];
 
-    for (int i = 0; i < n - k; i++)
+    for (int i = 0; i <= n - k; i++)
     {
-        aktual_sum = 0;
-        for (int j = i; j < i + k; j++)
-            aktual_sum += Height[j];
+        if (i != 0)
+            aktual_sum = Pref_sum[i + k - 1] - Pref_sum[i - 1];
+        else
+            aktual_sum = Pref_sum[i + k - 1];
         if (aktual_sum < res)
         {
             res = aktual_sum;
