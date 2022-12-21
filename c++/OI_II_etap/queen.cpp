@@ -29,12 +29,6 @@ int main()
     }
     sort(To_delete.begin(), To_delete.end());
     int tmp, val = 0;
-    if (To_delete.size() == n)
-    {
-        for (int el : To_delete)
-            cout << el << " ";
-        return 0;
-    }
     for (int i = 0; i < To_delete.size(); i++)
     {
         val = 0;
