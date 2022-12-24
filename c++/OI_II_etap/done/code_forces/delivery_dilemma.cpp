@@ -2,7 +2,7 @@
 
 using namespace std;
 
-const int MAX_VAL = 1e5 + 10;
+const int MAX_VAL = 2e5 + 10;
 pair<int, int> Petya[MAX_VAL];
 int main()
 {
