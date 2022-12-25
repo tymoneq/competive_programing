@@ -1,2 +1,0 @@
- Najmniejszy obwód : 0
- Największe pole : 0
