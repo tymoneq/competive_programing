@@ -6,7 +6,7 @@ long long Tree2[base * 2];
 
 void add(int v, int a, int b, int p, int k, int x) // p początek k koniec
 {
-    if (b < p || k > a)
+    if (b < p || k < a)
         return;
     else if (p <= a && b <= k)
     {
@@ -29,7 +29,7 @@ void add(int v, int a, int b, int p, int k, int x) // p początek k koniec
 }
 long long query(int v, int a, int b, int p, int k) // p - początek k koniec podaj sumę przedzialu
 {
-    if (b < p || k > a)
+    if (b < p || k < a)
         return 0;
     else if (p <= a && b <= k)
         return Tree[v];
@@ -48,7 +48,7 @@ long long query(int v, int a, int b, int p, int k) // p - początek k koniec pod
 
 void addmax(int v, int a, int b, int p, int k, int x) // p początek k koniec
 {
-    if (b < p || k > a)
+    if (b < p || k < a)
         return;
     else if (p <= a && b <= k)
     {
@@ -71,7 +71,7 @@ void addmax(int v, int a, int b, int p, int k, int x) // p początek k koniec
 }
 long long querymax(int v, int a, int b, int p, int k) // p - początek k koniec podaj sumę przedzialu
 {
-    if (b < p || k > a)
+    if (b < p || k < a)
         return 0;
     else if (p <= a && b <= k)
         return Tree[v];
