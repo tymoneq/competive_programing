@@ -14,7 +14,7 @@ inline void Find_cycle(int v)
         tajm = tmp - Index[v];
         for (int i = Index[v]; i > Index[v] - 1; i--)
             Cycle[Q[i]] = tajm;
- 
+
         for (int h : Q)
             Vis[h] = 0;
         Q.clear();
@@ -51,7 +51,7 @@ inline void dfs(int v)
 }
 int main()
 {
- 
+
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
