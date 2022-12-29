@@ -1,8 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 const int base = 1 << 16;
-int Tree[base << 1];
-int Tree2[base << 1];
+int Tree[base << 1], Tree2[base << 1];
 bool free_space = 1;
 queue<int> q;
 int p, k, value_to_rem;
