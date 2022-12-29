@@ -5,13 +5,13 @@ vector<int> Graph[M];
 bool Visit[M];
 int St[M];
 vector<int> res;
-inline void dfs(int v)
+inline void Find_cycle(int v)
 {
     Visit[v] = 1;
     res.push_back(v);
     for (int w : Graph[v])
         if (!Visit[w])
-            dfs(w);
+            Find_cycle(w);
 }
 int main()
 {
@@ -35,7 +35,7 @@ int main()
             mx_index = i;
         }
 
-    dfs(mx_index);
+    Find_cycle(mx_index);
     for (int el : res)
         cout << el << " ";
     return 0;

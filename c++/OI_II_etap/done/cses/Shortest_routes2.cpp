@@ -2,7 +2,8 @@
 using namespace std;
 vector<pair<int, int>> Graph[550];
 long long Dist[550][550];
-bool Vis[550];
+bool Vis[550][550];
+inline bool sorto(pair<int, int> &lhs, pair<int, int> &rhs) { return lhs.second < rhs.second; }
 int main()
 {
     ios_base::sync_with_stdio(0);
@@ -18,6 +19,8 @@ int main()
         Graph[b].push_back(make_pair(a, c));
     }
     for (int i = 1; i <= n; i++)
+        sort(Graph[i].begin(), Graph[i].end(), sorto);
+    for (int i = 1; i <= n; i++)
         for (int j = 1; j <= n; j++)
             Dist[i][j] = numeric_limits<long long>::max();
     priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> pq;
@@ -29,7 +32,7 @@ int main()
         {
             v = pq.top().second;
             pq.pop();
-            if (!Vis[v])
+            if (!Vis[i][v])
                 for (auto j = Graph[v].begin(); j != Graph[v].end(); j++)
                 {
                     w = (*j).first;
@@ -40,11 +43,8 @@ int main()
                         pq.push(make_pair(Dist[i][w], w));
                     }
                 }
-
-            Vis[v] = 1;
+            Vis[i][v] = 1;
         }
-        for (int j = 1; j <= n; j++)
-            Vis[j] = 0;
     }
     for (int i = 0; i < q; i++)
     {

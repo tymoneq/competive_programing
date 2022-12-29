@@ -5,13 +5,13 @@ vector<int> Graph[MAX_VAL];
 bool Visited[MAX_VAL];
 int sizee;
 int Goverments[MAX_VAL];
-inline void dfs(int v)
+inline void Find_cycle(int v)
 {
     Visited[v] = 1;
     sizee++;
     for (int w : Graph[v])
         if (!Visited[w])
-            dfs(w);
+            Find_cycle(w);
 }
 
 int main()
@@ -38,7 +38,7 @@ int main()
     for (int i = 0; i < k; i++)
     {
         sizee = 0;
-        dfs(Goverments[i]);
+        Find_cycle(Goverments[i]);
         cp.push_back(sizee);
     }
     sort(cp.begin(), cp.end());
@@ -46,7 +46,7 @@ int main()
         if (!Visited[i])
         {
             sizee = 0;
-            dfs(i);
+            Find_cycle(i);
             cp.back() += sizee;
         }
     for (int i = 0; i < cp.size(); i++)

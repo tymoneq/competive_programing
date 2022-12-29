@@ -8,13 +8,13 @@ int color[MAX_VAL];
 int Main_courses[MAX_VAL];
 vector<int> res;
 bool cycle = false;
-void dfs(int u)
+void Find_cycle(int u)
 {
     if (color[u] == 0)
     {
         color[u] = 1;
         for (int to : Graph[u])
-            dfs(to);
+            Find_cycle(to);
         color[u] = 2;
         res.push_back(u);
     }
@@ -41,7 +41,7 @@ int main()
         }
     }
     for (int i = 0; i < k; i++)
-        dfs(Main_courses[i]);
+        Find_cycle(Main_courses[i]);
     if (cycle)
     {
         cout << -1;

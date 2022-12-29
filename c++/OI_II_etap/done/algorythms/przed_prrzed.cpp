@@ -16,7 +16,7 @@ void add(int v, int a, int b, int p, int k, int x) // p początek k koniec
     else
     {
         int l = v * 2, r = (v * 2) + 1;
-        int mid = (a + b) * 2;
+        int mid = (a + b) / 2;
         Tree[l] += Tree2[v];
         Tree[r] += Tree2[v];
         Tree2[l] += Tree[l] / 2;
@@ -35,7 +35,7 @@ long long query(int v, int a, int b, int p, int k) // p - początek k koniec pod
         return Tree[v];
     else
     {
-        int l = v * 2, r = (v * 2) + 1, mid = (a + b) * 2;
+        int l = v * 2, r = (v * 2) + 1, mid = (a + b) / 2;
         Tree[l] += Tree2[v];
         Tree[r] += Tree2[v];
         Tree2[l] += Tree2[v] / 2;
@@ -58,7 +58,7 @@ void addmax(int v, int a, int b, int p, int k, int x) // p początek k koniec
     else
     {
         int l = v * 2, r = (v * 2) + 1;
-        int mid = (a + b) * 2;
+        int mid = (a + b) / 2;
         Tree[l] += Tree2[v];
         Tree[r] += Tree2[v];
         Tree2[l] += Tree[l];
@@ -77,7 +77,7 @@ long long querymax(int v, int a, int b, int p, int k) // p - początek k koniec 
         return Tree[v];
     else
     {
-        int l = v * 2, r = (v * 2) + 1, mid = (a + b) * 2;
+        int l = v * 2, r = (v * 2) + 1, mid = (a + b) / 2;
         Tree[l] += Tree2[v];
         Tree[r] += Tree2[v];
         Tree2[l] += Tree2[v] / 2;

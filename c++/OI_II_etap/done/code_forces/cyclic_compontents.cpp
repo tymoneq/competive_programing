@@ -7,7 +7,7 @@ int R[MAX_VAL];
 int Size[MAX_VAL];
 bool Visited[MAX_VAL];
 int correct = 1;
-void dfs(int b)
+void Find_cycle(int b)
 {
     Visited[b] = 1;
     if (Graph[b].size() != 2)
@@ -17,7 +17,7 @@ void dfs(int b)
     }
     for (int v : Graph[b])
         if (!Visited[v])
-            dfs(v);
+            Find_cycle(v);
 }
 
 int main()
@@ -75,7 +75,7 @@ int main()
         if (Size[i] < 3)
             continue;
         correct = 1;
-        dfs(i);
+        Find_cycle(i);
         if (correct == 1)
             res += 1;
     }
