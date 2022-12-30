@@ -5,12 +5,12 @@ int Tree[base << 1], Tree2[base << 1];
 bool free_space = 1;
 queue<int> q;
 int p, k, value_to_rem;
-void addmin(int v, int val)
+void uptd(int v)
 {
     v /= 2;
     while (v > 0)
     {
-        Tree[v] = min(val, Tree[v]);
+        Tree[v] = min(Tree[v * 2], Tree[v * 2 + 1]);
         v /= 2;
     }
 }
@@ -25,11 +25,8 @@ void querymin(int v, int a, int b)
         if (Tree[v] - value_to_rem < 0)
             free_space = 0;
         else
-        {
             q.push(v);
-            Tree[v] -= value_to_rem;
-            Tree2[v] -= value_to_rem;
-        }
+
         return;
     }
     else
@@ -42,6 +39,7 @@ void querymin(int v, int a, int b)
         Tree2[v] = 0;
         querymin(l, a, mid);
         querymin(r, mid + 1, b);
+        Tree[v] = min(Tree[l], Tree[r]);
     }
 }
 int main()
@@ -49,7 +47,7 @@ int main()
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    int n, m, z, a, b, w;
+    int n, m, z, a, b;
     cin >> n >> m >> z;
     for (int i = 1; i < base << 1; i++)
         Tree[i] = m;
@@ -57,13 +55,16 @@ int main()
     {
         free_space = 1;
         cin >> p >> k >> value_to_rem;
-        querymin(1, 1, n);
-        if (free_space == 1)
+        p--, k--;
+        querymin(1, 0, base - 1);
+        if (free_space)
         {
             cout << "T\n";
             while (!q.empty())
             {
-                addmin(q.front(), Tree[q.front()]);
+                Tree[q.front()] -= value_to_rem;
+                Tree2[q.front()] -= value_to_rem;
+                uptd(q.front());
                 q.pop();
             }
         }
@@ -72,9 +73,7 @@ int main()
             cout << "N\n";
             while (!q.empty())
             {
-                w = q.front();
-                Tree[w] += value_to_rem;
-                Tree2[w] += value_to_rem;
+                uptd(q.front());
                 q.pop();
             }
         }
