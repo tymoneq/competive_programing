@@ -26,8 +26,7 @@ int main()
     d[0] = 0; // to find negativ cycle repeat loop for one more time
     for (int i = 0; i < n - 1; i++)
         for (int j = 0; j < m; j++)
-            if (d[G[j].b] > d[G[j].a] + G[j].c)
-                d[G[j].b] = d[G[j].a] + G[j].c;
+            d[G[j].b] = min(d[G[j].a] + G[j].c, d[G[j].b]);
 
     for (int i = 0; i <= n; i++)
         cout << d[i] << " ";
