@@ -1,6 +1,6 @@
-g++ milk_pumping.cpp -o m.e
+g++ cow_cross_the_road.cpp -o m.e
 
-for((i=1;i<=10;i++))
+for((i=1;i<=11;i++))
 do
     ./m.e < $i.in > r.txt
     if diff -b r.txt $i.out > /dev/null
