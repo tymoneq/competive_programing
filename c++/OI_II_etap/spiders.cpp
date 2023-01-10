@@ -1,67 +1,73 @@
 #include <bits/stdc++.h>
-
 using namespace std;
-const int M = 3e5 + 10;
+const int M = 6e5 + 7, m = 3e5;
+
 vector<int> Graph[M];
-int Dist[M], Path[M], Legs[M];
-bool Visit[M];
+int Path[M];
+queue<int> q;
+vector<int> p;
 int main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    int n, pocz, kon, v;
+    int n, pocz, kon, v, a,j,i;
     cin >> n;
-    for (int i = 1; i <= n; i++)
-        cin >> Legs[i];
-    cin >> pocz >> kon;
-    for (int i = 1; i <= n; i++)
-        for (int j = i + 1; j <= n; j++)
-            if (gcd(Legs[i], Legs[j]) != 1)
+    for (i = 1; i <= n; i++)
+    {
+        cin >> a;
+        if (a == 1)
+            continue;
+        Graph[i].push_back(a + m);
+        Graph[a + m].push_back(i);
+        for (j = 2; j * j <= a; j++)
+            if (a % j == 0)
             {
-                Graph[i].push_back(j);
-                Graph[j].push_back(i);
+                Graph[i].push_back(j + m);
+                Graph[j + m].push_back(i);
+                if (a / j != j)
+                {
+                    Graph[a / j + m].push_back(i);
+                    Graph[i].push_back(a / j + m);
+                }
             }
-        
+    }
+    cin >> pocz >> kon;
     if (pocz == kon)
     {
         cout << 1 << "\n"
              << pocz;
         return 0;
     }
-    Dist[pocz] = 1;
-    queue<int> q;
     q.push(pocz);
-    Visit[pocz] = 1;
     while (!q.empty())
     {
         v = q.front();
         q.pop();
         for (int w : Graph[v])
-            if (!Visit[w])
+            if (Path[w]==0 && w!=pocz)
             {
-                Dist[w] = Dist[v] + 1;
                 Path[w] = v;
-                Visit[w] = 1;
                 q.push(w);
             }
     }
-    vector<int> p;
-    if (Dist[kon] != 0)
+
+    while (Path[kon] != 0)
     {
-        cout << Dist[kon] << "\n";
-        while (Path[kon] != 0)
-        {
+        if (kon < m)
             p.push_back(kon);
-            kon = Path[kon];
-        }
+        kon = Path[kon];
+    }
+    if (kon == pocz)
         p.push_back(pocz);
-        for (int i = p.size() - 1; i >= 0; i--)
-            cout << p[i] << " ";
-    }
-    else
+    if (p.size() == 0)
     {
-        cout << -1;
+        cout << -1 << "\n";
+        return 0;
     }
+    cout << p.size() << "\n";
+    for (i = p.size() - 1; i >= 0; i--)
+        cout << p[i] << " ";
+
     return 0;
 }

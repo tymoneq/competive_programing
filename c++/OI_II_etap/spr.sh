@@ -1,6 +1,6 @@
-g++ goodSub_brut.cpp -o sb.e
-g++ goodSubarrays.cpp -o s.e
-g++ gen.cpp -o g.e
+g++ -std=c++17 spider_brut.cpp -o sb.e
+g++ -std=c++17 spiders.cpp -o s.e
+g++ -std=c++17 gen.cpp -o g.e
 for((i=1;i>0;i++))
 do
     echo $i > ziarno
