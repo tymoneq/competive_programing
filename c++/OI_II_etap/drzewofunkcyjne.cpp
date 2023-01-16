@@ -22,7 +22,7 @@ int main()
         Graph[a].push_back(b);
         Graph[b].push_back(a);
     }
-    long long sum = 0;
+    long long sum = 0, tmp = 0, div_count = 0, div_count2 = 0;
     queue<pair<int, int>> q; // second -1 odejmujes 1 dodajesz
     for (int i = 0; i < n; i++)
     {
@@ -41,14 +41,21 @@ int main()
                     q.push({w, v.second * -1});
                 }
         }
+        tmp = 0;
         for (int j = 0; j < n; j++)
         {
-            sum += Dist[j];
+            tmp += Dist[j];
             Dist[j] = 0;
             Vis[j] = 0;
         }
+        div_count2 = tmp / mod;
+        tmp %= mod;
+        div_count += div_count2;
+        sum += tmp;
     }
     sum %= mod;
+    if (div_count < 0)
+        sum *= -1;
     cout << sum;
 
     return 0;
