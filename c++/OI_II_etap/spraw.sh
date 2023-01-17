@@ -1,9 +1,9 @@
-g++ -std=c++17 tamingtheHerd.cpp -o t.e
+g++ -std=c++17 connectingTwoBarnsDijkstra.cpp -o c.e
 
-for((i=2 ; i<10;i++))
+for((i=5 ; i<=10;i++))
 do
-    ./t.e < $i.in > t.out
-    if diff -b t.out $i.out > /dev/null
+    ./c.e < $i.in > c$i.out
+    if diff -b c$i.out $i.out > /dev/null
     then
        echo -ne "\e[1;32m$i\e[0m       \r"
     else
