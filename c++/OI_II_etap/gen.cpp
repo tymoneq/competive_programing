@@ -12,8 +12,8 @@ int main()
     int z, n;
     cin >> z;
     srand(z);
-    n = rand() % 10;
+    n = 2000000;
     cout << n << "\n";
     for (int i = 0; i < n; i++)
-        cout << p(1, 1000) << "\n";
+        cout << p(1, 10000000) << "\n";
 }

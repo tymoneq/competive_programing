@@ -4,7 +4,7 @@ using namespace std;
 constexpr int M = 5e3 + 10;
 vector<int> Tree[M];
 int Pre[M], Post[M], NumOfIll[M];
-bool Vis[M];
+bool Vis[M], OFF[M];
 int n, k, T, timer = 0;
 set<int> Ill;
 inline void preorder(int v)
@@ -44,5 +44,7 @@ int main()
         Tree[a].push_back(b), Tree[b].push_back(a);
     }
     preorder(1);
+    int res = Post[1] - Pre[1] + 1 - NumOfIll[1];
+    cout << res;
     return 0;
 }
