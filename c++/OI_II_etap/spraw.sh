@@ -1,14 +1,10 @@
-g++ -std=c++17 connectingTwoBarnsDijkstra.cpp -o c.e
-
-for((i=5 ; i<=10;i++))
+g++ -std=c++17 RoomAlocation.cpp -o r.e
+g++ gen.cpp -o g.e
+for((i=1 ; i>0;i++))
 do
-    ./c.e < $i.in > c$i.out
-    if diff -b c$i.out $i.out > /dev/null
-    then
-       echo -ne "\e[1;32m$i\e[0m       \r"
-    else
-        echo -ne "\e[1;31m$i\e[0m\n"
-
-    fi
-
+echo $i
+echo $i > ziarno
+    ./g.e < ziarno > f.out
+    time ./r.e <f.out > R.out
+    
 done
