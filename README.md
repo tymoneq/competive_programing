@@ -1,1 +1,1 @@
-Rep with all my c++ code from preparing to OI and other programing contests
+Rep with all my c++ code from preparing to POI and other programing contests
