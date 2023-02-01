@@ -11,7 +11,7 @@ int main()
     long long n, tmp, z;
     dp[1] = 26;
     for (int i = 2; i < 13; i++)
-        dp[i] = dp[i - 1] + ((dp[i - 1]) * 26);
+        dp[i] = dp[i - 1] + ((dp[i - 1]+1) * 26);
     cin >> T;
     vector<char> Res;
     for (int t = 0; t < T; t++)
