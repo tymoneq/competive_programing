@@ -1,39 +1,51 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-long long dp[13];
+constexpr long long N = 1e18;
 int main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    int T;
-    long long n, tmp, z;
-    dp[1] = 26;
-    for (int i = 2; i < 13; i++)
-        dp[i] = dp[i - 1] + ((dp[i - 1]+1) * 26);
+    int T, z = 0;
+    long long n, tmp, ind = 27, val = 26;
+    map<long long, char> M;
+    while (ind <= N)
+    {
+        M[ind] = 'A' + z;
+        if ('A' + z == 'Z')
+        {
+            z = 0;
+            ind += val;
+            val *= 26;
+        }
+        else
+        {
+            z++;
+            ind += val;
+        }
+    }
+
     cin >> T;
     vector<char> Res;
     for (int t = 0; t < T; t++)
     {
         cin >> n;
+        tmp = n;
         Res.clear();
-        if (n > 26)
+        while (n > 26)
         {
-            tmp = n / 27;
-            Res.push_back('A' + tmp - 1);
-            z = 0;
-            if (tmp * 27 != n)
-                for (int i = tmp * 27; i <= n; i++)
-                    z++;
-            if ((n + 1) % 27 == 0)
-                z -= 2;
-            Res.push_back('A' + z);
+            auto it = M.lower_bound(n);
+            if (it->first != n)
+                it--;
+            Res.push_back(it->second);
+            n -= it->first;
         }
-        else
-            Res.push_back('A' + n - 1);
-        for (char z : Res)
-            cout << z;
+        if (tmp > 26)
+            n++;
+        Res.push_back('A' + (n - 1));
+        for (auto w : Res)
+            cout << w;
         cout << "\n";
     }
     return 0;

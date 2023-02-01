@@ -12,12 +12,12 @@ int main()
     int z, n;
     cin >> z;
     srand(z);
-    n = 20000;
-    int Val = 1e9;
+    n = 1;
+    int Val = 702;
     cout << n << "\n";
     for (int i = 0; i < n; i++)
     {
-        int v = p(1, Val - 1000);
-        cout << v << " " << p(v, Val) << "\n ";
+        int v = p(1, Val);
+        cout << v;
     }
 }

@@ -27,7 +27,7 @@ int lca(int u, int v)
     if (is_ancestor(v, u))
         return v;
     for (int i = L; i >= 0; i--)
-        if (!is_ancestor(jmp[u][i], v) && jmp[u][i] != -1)
+        if (jmp[u][i] != -1 && !is_ancestor(jmp[u][i], v))
             u = jmp[u][i];
     return jmp[u][0];
 }

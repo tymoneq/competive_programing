@@ -13,7 +13,7 @@ int main()
     unordered_map<int, string> M;
     string s;
     int ind = 0;
-    for (int i = 1; i <= 1000; i++)
+    for (int i = 1; i <= 800; i++)
     {
         M[i] = s;
         M[i] += 'A' + ind;
