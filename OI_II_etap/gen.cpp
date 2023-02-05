@@ -9,15 +9,16 @@ int p(int a, int b)
 
 int main()
 {
-    int z, n;
+    int z, t;
     cin >> z;
     srand(z);
-    n = 1;
-    int Val = 702;
-    cout << n << "\n";
-    for (int i = 0; i < n; i++)
+    t = 100;
+    int n = 100;
+    cout << t << "\n";
+    for (int i = 0; i < t; i++)
     {
-        int v = p(1, Val);
-        cout << v;
+        cout << n << "\n";
+        for (int j = 0; j < n; j++)
+            cout << p(1, n) << " " << p(1, n) << "\n";
     }
 }

@@ -1,5 +1,5 @@
-g++ Banana.cpp -o sb.e
-g++ Ban.cpp -o s.e
+g++ SplitIntoTwoSets.cpp -o sb.e
+g++ Sp.cpp -o s.e
 g++ gen.cpp -o g.e
 for((i=1;i>0;i++))
 do
