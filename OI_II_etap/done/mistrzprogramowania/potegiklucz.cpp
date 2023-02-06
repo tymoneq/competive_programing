@@ -7,5 +7,4 @@ int main()
     ll a, b;
     cin >> a >> b;
     ll pot = b / a;
-    cout << b * pot;
 }
