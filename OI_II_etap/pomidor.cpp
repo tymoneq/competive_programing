@@ -24,7 +24,6 @@ int main()
         cin >> s;
         cor = 1;
         auto it = lower_bound(S.begin(), S.end(), s);
-
         if (it == S.end())
         {
             cout << "Pomidor\n";
@@ -45,4 +44,5 @@ int main()
         else
             cout << ss << "\n";
     }
+    return 0;
 }

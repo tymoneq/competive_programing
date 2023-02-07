@@ -5,25 +5,15 @@ constexpr long long INF = 1e15;
 constexpr int M = 2010;
 struct edge
 {
-    int weight, start, end;
+    long long weight, start, end;
 };
 
-int Matrix[M][M], R[M], Pre[M], Post[M], timer;
+long long Matrix[M][M], R[M], Pre[M], Post[M], timer;
 long long Dist[M][M];
 bool Vis[M];
 vector<edge> E;
 vector<pair<int, int>> adj[M];
 inline bool sorto(edge &lhs, edge &rhs) { return lhs.weight < rhs.weight; }
-inline void dfs(int v, int p)
-{
-    timer++;
-    Pre[v] = timer;
-    for (auto w : adj[v])
-        if (w.first != p)
-            dfs(w.first, v);
-    timer++;
-    Post[v] = timer;
-}
 inline int fint(int a)
 {
     if (R[a] == a)
@@ -60,47 +50,25 @@ int main()
     }
 
     sort(E.begin(), E.end(), sorto);
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
-        {
-            if (i == j)
-                Dist[i][j] = 0;
-            else
-                Dist[i][j] = INF;
-        }
     for (auto w : E)
         onion(w.start, w.end, w.weight);
-
-    dfs(0, 0);
-    priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> pq;
-    pq.push({0, 0});
-    while (!pq.empty())
+    queue<pair<int, int>> q;
+    for (int i = 0; i < n; i++)
     {
-        auto w = pq.top();
-        pq.pop();
-        if (!Vis[w.second])
-            for (auto v : adj[w.second])
-                if (Dist[0][v.first] > Dist[0][w.second] + v.second)
-                {
-                    Dist[0][v.first] = Dist[0][w.second] + v.second;
-                    pq.push({Dist[0][v.first], v.first});
-                }
-
-        Vis[w.second] = 1;
-    }
-    for (int i = 1; i < n; i++)
-        for (int j = 0; j < n; j++)
+        Dist[i][i] = 0;
+        q.push({i, i});
+        while (!q.empty())
         {
-            if (i == j)
-                Dist[i][j] = 0;
-            else
-            {
-                if ((Pre[i] < Pre[j] && Post[i] > Post[j]) || (Pre[i] > Pre[j] && Post[i] < Post[j]))
-                    Dist[i][j] = abs(Dist[0][i] - Dist[0][j]);
-                else
-                    Dist[i][j] = Dist[0][i] + Dist[0][j];
-            }
+            auto w = q.front();
+            q.pop();
+            for (auto v : adj[w.first])
+                if (v.first != w.second)
+                {
+                    Dist[i][v.first] = Dist[i][w.first] + v.second;
+                    q.push({v.first, w.first});
+                }
         }
+    }
     for (int i = 0; i < n; i++)
         if (corect)
             for (int j = 0; j < n; j++)
