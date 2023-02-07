@@ -7,10 +7,11 @@ int main()
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    set<string> S;
+
     int n, q;
     string s;
     cin >> n;
+    set<string> S;
     for (int i = 0; i < n; i++)
     {
         cin >> s;
@@ -23,12 +24,13 @@ int main()
         cin >> s;
         cor = 1;
         auto it = lower_bound(S.begin(), S.end(), s);
-        string ss = *it;
+
         if (it == S.end())
         {
             cout << "Pomidor\n";
             continue;
         }
+        string ss = *it;
         if (ss.size() < s.size())
             cor = 0;
         if (cor)
