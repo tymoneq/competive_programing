@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-
+set<string> S[27];
 int main()
 {
     ios_base::sync_with_stdio(0);
@@ -11,11 +11,10 @@ int main()
     int n, q;
     string s;
     cin >> n;
-    set<string> S;
     for (int i = 0; i < n; i++)
     {
         cin >> s;
-        S.insert(s);
+        S[s[0] - 'a'].insert(s);
     }
     cin >> q;
     bool cor = 1;
@@ -23,8 +22,8 @@ int main()
     {
         cin >> s;
         cor = 1;
-        auto it = lower_bound(S.begin(), S.end(), s);
-        if (it == S.end())
+        auto it = lower_bound(S[s[0] - 'a'].begin(), S[s[0] - 'a'].end(), s);
+        if (it == S[s[0]].end())
         {
             cout << "Pomidor\n";
             continue;
