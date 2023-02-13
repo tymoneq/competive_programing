@@ -1,29 +1,29 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-set<string> S[27];
 int main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-
     int n, q;
     string s;
     cin >> n;
+    vector<string> S;
     for (int i = 0; i < n; i++)
     {
         cin >> s;
-        S[s[0] - 'a'].insert(s);
+        S.push_back(s);
     }
+    sort(S.begin(), S.end());
     cin >> q;
     bool cor = 1;
     for (int i = 0; i < q; i++)
     {
         cin >> s;
         cor = 1;
-        auto it = lower_bound(S[s[0] - 'a'].begin(), S[s[0] - 'a'].end(), s);
-        if (it == S[s[0]].end())
+        auto it = lower_bound(S.begin(), S.end(), s);
+        if (it == S.end())
         {
             cout << "Pomidor\n";
             continue;
@@ -31,13 +31,16 @@ int main()
         string ss = *it;
         if (ss.size() < s.size())
             cor = 0;
+
         if (cor)
+        {
             for (int j = 0; j < s.size(); j++)
                 if (s[j] != ss[j])
                 {
                     cor = 0;
                     break;
                 }
+        }
         if (!cor)
             cout << "Pomidor\n";
         else
