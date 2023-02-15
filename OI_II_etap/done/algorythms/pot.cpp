@@ -1,19 +1,16 @@
 const int mod = 1e9 + 7;
 
-int pot(long long a, long long b)
+long long pot_szybkie(long long a, unsigned int n)
 {
-    if (b == 0)
+    long long w = 1;
+
+    while (n > 0)
     {
-        return 1;
+        if (n % 2 == 1) // jesli bit jest = 1
+            w *= a;
+
+        a *= a;
+        n /= 2; // skrócenie o jeden bit
     }
-    if (b % 2 == 0)
-    {
-        long long pom;
-        pom = pot(a, b / 2);
-        return (pom * pom) % mod;
-    }
-    else
-    {
-        return a * pot(a, b - 1) % mod;
-    }
+    return w;
 }
