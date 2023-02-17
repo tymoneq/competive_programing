@@ -1,8 +1,9 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-int Grid[3][1010];
-bool Vis[3][1010];
+constexpr int M= 5e5+10;
+int Grid[3][M];
+bool Vis[3][M];
 int main()
 {
     ios_base::sync_with_stdio(0);
