@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 const int MAX_VAL = 1e3 + 10;
-vector<int> Graph[MAX_VAL];
+vector<int> Tree[MAX_VAL];
 bool Visited[MAX_VAL];
 int sizee;
 int Goverments[MAX_VAL];
@@ -9,7 +9,7 @@ inline void Find_cycle(int v)
 {
     Visited[v] = 1;
     sizee++;
-    for (int w : Graph[v])
+    for (int w : Tree[v])
         if (!Visited[w])
             Find_cycle(w);
 }
@@ -32,8 +32,8 @@ int main()
         cin >> a >> b;
         --a;
         --b;
-        Graph[a].push_back(b);
-        Graph[b].push_back(a);
+        Tree[a].push_back(b);
+        Tree[b].push_back(a);
     }
     for (int i = 0; i < k; i++)
     {

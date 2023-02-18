@@ -1,8 +1,9 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-constexpr int M= 5e5+10;
+constexpr int M = 20;
 int Grid[3][M];
+int StawPref[M], Connect[M];
 bool Vis[3][M];
 int main()
 {
@@ -10,57 +11,40 @@ int main()
     cin.tie(0);
     cout.tie(0);
     int n, q, a, b;
-    char z;
     cin >> n;
+    char z;
     for (int i = 0; i < 3; i++)
         for (int j = 1; j <= n; j++)
         {
             cin >> z;
             Grid[i][j] = z - '0';
         }
-    cin >> q;
+    int staw = 0;
     queue<pair<int, int>> que;
-    for (int Q = 0; Q < q; Q++)
+    for (int j = 1; j <= n; j++)
+    {
+        staw = 0;
+        if (Grid[0][j] == 1 && Grid[0][j - 1] == 1)
+            Connect[j] = 1;
+        else if (Grid[0][j] == 1)
+            staw++;
+        if (Grid[1][j] == 1 && Grid[1][j - 1] == 1 && Grid[0][j] != 1)
+            Connect[j] = 1;
+        else if (Grid[1][j] == 1 && Grid[0][j] != 1)
+            staw++;
+        if (Grid[2][j] == 1 && (Grid[2][j - 1] == 1 && Grid[1][j] != 1))
+        {
+           
+        }
+        else if (Grid[2][j] == 1 && Grid[1][j] != 1)
+            staw++;
+        StawPref[j] = StawPref[j - 1] + staw;
+    }
+    cin >> q;
+    for (int i = 0; i < q; i++)
     {
         cin >> a >> b;
-        int res = 0;
-        for (int i = 0; i < 3; i++)
-            for (int j = a; j <= b; j++)
-                if (!Vis[i][j] && Grid[i][j] == 1)
-                {
-                    res++;
-                    que.push({i, j});
-                    Vis[i][j] = 1;
-                    while (!que.empty())
-                    {
-                        auto v = que.front();
-                        que.pop();
-                        if (v.first > 0 && !Vis[v.first - 1][v.second] && Grid[v.first - 1][v.second] == 1)
-                        {
-                            que.push({v.first - 1, v.second});
-                            Vis[v.first - 1][v.second] = 1;
-                        }
-                        if (v.first < 2 && !Vis[v.first + 1][v.second] && Grid[v.first + 1][v.second] == 1)
-                        {
-                            que.push({v.first + 1, v.second});
-                            Vis[v.first + 1][v.second] = 1;
-                        }
-                        if (v.second - 1 >= a && !Vis[v.first][v.second - 1] && Grid[v.first][v.second - 1] == 1)
-                        {
-                            que.push({v.first, v.second - 1});
-                            Vis[v.first][v.second - 1] = 1;
-                        }
-                        if (v.second + 1 <= b && !Vis[v.first][v.second + 1] && Grid[v.first][v.second + 1] == 1)
-                        {
-                            que.push({v.first, v.second + 1});
-                            Vis[v.first][v.second + 1] = 1;
-                        }
-                    }
-                }
-        cout << res << "\n";
-        for (int i = 0; i < 3; i++)
-            for (int j = 1; j <= n; j++)
-                Vis[i][j] = 0;
+        cout << StawPref[b] - StawPref[a - 1] + Connect[a] << "\n";
     }
     return 0;
 }
