@@ -3,12 +3,28 @@
 using namespace std;
 constexpr int M = 1e7, N = 100;
 bool notPrime[M];
+vector<int> Prime;
+bool fint(int val)
+{
+    int l = 0, r = Prime.size(), mid;
+    while (l <= r)
+    {
+        mid = l + (r - l) / 2;
+        if (Prime[mid] == val)
+            return 1;
+        if (Prime[mid] < val)
+            l = mid + 1;
+        else
+            r = mid - 1;
+    }
+    return 0;
+}
 int main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    set<int> Prime;
+
     vector<int> RES(N);
     vector<int> Nums(N);
     for (int i = 0; i < N; i++)
@@ -21,14 +37,14 @@ int main()
     int ind = 0;
     for (int i = 2; i < M; i++)
         if (!notPrime[i])
-            Prime.insert(i);
+            Prime.push_back(i);
 
     for (int i = 0; i < N; i++)
         for (int w : Prime)
         {
-            if (w >= Nums[i] || w > Nums[i] / 2)
+            if (w > Nums[i] / 2)
                 break;
-            if (Prime.find(Nums[i] - w) != Prime.end())
+            if (fint(Nums[i] - w))
                 RES[i]++;
         }
     pair<int, int> MX, MN;
