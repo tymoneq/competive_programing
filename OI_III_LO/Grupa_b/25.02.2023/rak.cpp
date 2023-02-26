@@ -3,8 +3,8 @@
 using namespace std;
 constexpr int M = 2e4 + 10, add = 1e4;
 vector<int> Graph[M], Graph2[M];
-bool vis[M], vis2[M];
-int Res[M], r;
+bool vis[M];
+int ConnectedComp[M], r, Res[M], Minus[M];
 stack<int> S;
 void dfs(int v)
 {
@@ -16,11 +16,10 @@ void dfs(int v)
 }
 void dfs2(int v)
 {
-    vis2[v] = 1;
-    if (vis[v])
-        Res[v] = r;
+    vis[v] = 1;
+    ConnectedComp[v] = r;
     for (int w : Graph2[v])
-        if (!vis2[w])
+        if (!vis[w])
             dfs2(w);
 }
 int main()
@@ -50,30 +49,39 @@ int main()
             Graph2[a + add].push_back(b + add);
         }
     }
-    int res = 0;
     for (int i = add + 1; i <= add + n; i++)
-    {
-        res = 0, r = 1;
-        dfs(i);
-        while (!S.empty())
-        {
-            if (!vis2[S.top()])
-            {
-                dfs2(S.top());
-                r++;
-            }
-            S.pop();
-        }
-        for (int j = 1; j < M; j++)
-        {
-            if (Res[j] == 1)
-                res++;
-            Res[j] = 0;
-            vis[j] = 0;
-            vis2[j] = 0;
-        }
-        cout << res - 1 << "\n";
-    }
+        if (!vis[i])
+            dfs(i);
+    for (int i = 1; i < M; i++)
+        vis[i] = 0;
 
+    while (!S.empty())
+    {
+        if (!vis[S.top()])
+        {
+            r++;
+            dfs2(S.top());
+        }
+        S.pop();
+    }
+    vector<set<int>> V(r + 1);
+    for (int i = 1; i < M; i++)
+        if (ConnectedComp[i] != 0)
+        {
+            if (i > add && V[ConnectedComp[i]].count(i - add))
+                Minus[ConnectedComp[i]]++;
+            V[ConnectedComp[i]].insert(i);
+        }
+    for (int i = 1; i <= r; i++)
+    {
+        auto it = V[i].upper_bound(add);
+        while (it != V[i].end())
+        {
+            Res[*it - add] = V[i].size() - 1 - Minus[i];
+            it++;
+        }
+    }
+    for (int i = 1; i <= n; i++)
+        cout << Res[i] << "\n";
     return 0;
 }
