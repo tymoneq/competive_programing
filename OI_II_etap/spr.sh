@@ -1,5 +1,5 @@
-g++ bakerybrut.cpp -o sb.e
-g++ bakery.cpp -o s.e
+g++ milkSumbrut.cpp -o sb.e
+g++ milkSum.cpp -o s.e
 g++ gen.cpp -o g.e
 for((i=1;i>0;i++))
 do
