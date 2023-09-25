@@ -1,1 +1,9 @@
-For C = 0.1 Delta T = 0.1 Time = 23
+For C = 0.1 Delta T = 0.1 Time = 91.7
+For C = 0.2 Delta T = 0.1 Time = 45.7
+For C = 0.5 Delta T = 0.1 Time = 18.2
+For C = 0.1 Delta T = 0.01 Time = 68.88
+For C = 0.2 Delta T = 0.01 Time = 34.43
+For C = 0.5 Delta T = 0.01 Time = 13.77
+For C = 0.1 Delta T = 0.0001 Time = 22.8342
+For C = 0.2 Delta T = 0.0001 Time = 11.4171
+For C = 0.5 Delta T = 0.0001 Time = 4.5669
