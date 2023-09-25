@@ -1,0 +1,1 @@
+For C = 0.1 Delta T = 0.1 Time = 23
