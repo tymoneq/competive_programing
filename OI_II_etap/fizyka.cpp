@@ -42,7 +42,9 @@ int main()
             timer++;
             Vout << "!\n";
             Sout << "!\n";
-            Rout << "For C = " << C[i] << " Delta T = " << Deltat[k] << " Time = " << timer * Deltat[k] << "\n";
+            Rout << "For C = " << C[i] << " Delta T = " << Deltat[k] << " Time = " << timer * Deltat[k] << " Terminal  V " << Vn << " m/s"
+                 << " Distance travelled " << Sn << " m"
+                 << "\n";
         }
     }
     return 0;
