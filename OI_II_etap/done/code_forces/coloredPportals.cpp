@@ -38,16 +38,39 @@ int main()
                 res = abs(x - y);
             else
             {
-                set<string> S = {V[x].first.append(V[y].first), V[x].first.append(V[y].second), V[x].second.append(V[y].first), V[x].second.append(V[y].second)};
+                set<string> S;
+
+                for (int k = 0; k < 2; k++)
+                {
+                    if (k == 0)
+                        s = V[x].first;
+                    else
+                        s = V[x].second;
+
+                    for (int j = 0; j < 2; j++)
+                    {
+                        if (j == 0)
+                            s.append(V[y].first);
+                        else
+                            s.append(V[y].second);
+
+                        S.insert(s);
+                        s.erase(1);
+                    }
+                }
 
                 for (string a : S)
                 {
                     if (a[0] > a[1])
                         swap(a[0], a[1]);
-                    for (int w : Colors[Legend[a]])
+                    tmp = Legend[a];
+                    auto it = upper_bound(Colors[tmp].begin(), Colors[tmp].end(), x);
+                    if (it != Colors[tmp].end())
+                        res = min(res, abs(x - *it) + abs(y - *it));
+                    if (it != Colors[tmp].begin())
                     {
-                        tmp = abs(x - w) + abs(w - y);
-                        res = min(tmp, res);
+                        it--;
+                        res = min(res, abs(x - *it) + abs(y - *it));
                     }
                 }
             }
