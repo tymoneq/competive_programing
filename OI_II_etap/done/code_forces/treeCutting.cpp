@@ -30,13 +30,34 @@ bool valid(int lenght, int k, int &n)
 
     while (!pq.empty())
     {
+        if (k == 0)
+        {
+            while (!pq.empty())
+            {
+                auto v = pq.top();
+                Vis[v.second] = 1;
+                pq.pop();
+                for (int w : adj[v.second])
+                    if (!Vis[w])
+                    {
+                        if (D[w] == 0)
+                        {
+                            pq.push({v.first - 1, w});
+                            D[w]++;
+                        }
+                        D[w] += D[v.second];
+                    }
+            }
+            if (D[1] >= lenght)
+                return 1;
+            else
+                return 0;
+        }
         auto v = pq.top();
         Vis[v.second] = 1;
         pq.pop();
-        if (v.first == 0 || k <= 0)
+        if (pq.size() == 0)
             break;
-        if (pq.size() == 0 && D[v.second] < lenght)
-            return 0;
 
         if (D[v.second] >= lenght)
         {
@@ -61,7 +82,7 @@ bool valid(int lenght, int k, int &n)
                 }
     }
 
-    if (k == 0 && ((Vis[1] && D[1] >= lenght) || !Vis[1]))
+    if (k == 0)
         return 1;
     else
         return 0;
