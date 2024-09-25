@@ -29,17 +29,17 @@ ll calc(int mask, ll n)
     return n / divaider;
 }
 
-bool valid(ll range, ll n, ll k)
+bool valid(ll range, ll k)
 {
 
-    ll ans = n;
+    ll ans = range;
     ll others = 0;
     for (int i = 1; i < (1 << Primes.size()); i++)
     {
-        if (__popcount(i) & 1)
-            others += calc(i, n);
+        if (__builtin_popcount(i) & 1)
+            others += calc(i, range);
         else
-            others -= calc(i, n);
+            others -= calc(i, range);
     }
     ans -= others;
     return ans >= k;
@@ -60,7 +60,7 @@ int main()
     {
         mid = lo + (hi - lo) / 2;
 
-        if (valid(mid, n, k))
+        if (valid(mid, k))
         {
             ans = mid;
             hi = mid - 1;
