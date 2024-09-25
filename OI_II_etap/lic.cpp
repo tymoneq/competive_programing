@@ -12,7 +12,7 @@ void to_prime(ll n)
         if (n % i == 0)
         {
             Primes.push_back(i);
-            while (n % i != 0)
+            while (n % i == 0)
                 n /= i;
         }
     if (n != 1)
@@ -22,8 +22,8 @@ void to_prime(ll n)
 ll calc(int mask, ll n)
 {
     ll divaider = 1;
-    for (int i = 0; i < i; i++)
-        if ((mask << i) & 1)
+    for (int i = 0; i < Primes.size(); i++)
+        if ((mask >> i) & 1)
             divaider *= Primes[i];
 
     return n / divaider;
@@ -33,15 +33,15 @@ bool valid(ll range, ll n, ll k)
 {
 
     ll ans = n;
-
-    for (int i = 1; i < (2 << Primes.size() + 1); i++)
+    ll others = 0;
+    for (int i = 1; i < (1 << Primes.size()); i++)
     {
         if (__popcount(i) & 1)
-            ans -= calc(i, n);
+            others += calc(i, n);
         else
-            ans += calc(i, n);
+            others -= calc(i, n);
     }
-
+    ans -= others;
     return ans >= k;
 }
 
