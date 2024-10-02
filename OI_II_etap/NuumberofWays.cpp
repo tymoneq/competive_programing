@@ -16,7 +16,7 @@ int main()
     ll sum_l = 0, sum_m = 0, sum_r = 0, ans = 0;
     cin >> n;
     vector<int> a(n);
-
+    vector<int> A;
     for (int &b : a)
     {
         cin >> b;
@@ -28,7 +28,11 @@ int main()
         Pref[i] = Pref[i - 1] + a[i];
 
     for (int i = n - 2; i >= 0; i--)
+    {
         Suf[i] = Suf[i + 1] + a[i];
+        if (Suf[i] < Suf[i + 1])
+            A.push_back(i+1);
+    }
 
     left = 0, right = n - 1;
     sum_l = a[0];
@@ -39,7 +43,27 @@ int main()
     {
         if (sum_l == sum_m && sum_l == sum_r)
         {
+
+            // finding index in A
             int l = left + 2, r = right, mid, res = right;
+            if (A.size() > 0)
+            {
+                int L = 0, R = A.size();
+                while (L <= R)
+                {
+                    mid = L + (R - L) / 2;
+                    if (A[mid] <= r)
+                    {
+                        res = mid;
+                        L = mid + 1;
+                    }
+                    else
+                        R = mid - 1;
+                }
+                l = max(l, A[res]);
+            }
+
+            res = right;
             while (l <= r)
             {
                 mid = l + (r - l) / 2;
