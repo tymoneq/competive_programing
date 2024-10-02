@@ -5,6 +5,7 @@ using namespace std;
 typedef long long ll;
 constexpr int N = 5e5 + 10;
 ll Pref[N], Suf[N];
+int cnt[N], sums[N];
 
 int main()
 {
@@ -24,51 +25,25 @@ int main()
     }
     Pref[0] = a[0];
     Suf[n - 1] = a[n - 1];
-    for (int i = 1; i < n - 1; i++)
+    for (int i = 1; i < n; i++)
         Pref[i] = Pref[i - 1] + a[i];
 
     for (int i = n - 2; i >= 0; i--)
         Suf[i] = Suf[i + 1] + a[i];
 
-    left = 0, right = n - 1;
-    sum_l = a[0];
-    sum_r = a[n - 1];
-    sum_m -= a[0] + a[n - 1];
-
-    while (left < right - 1)
+    if (Suf[0] % 3 != 0 || n < 3)
+        ans = 0;
+    else
     {
-        if (sum_l == sum_m && sum_l == sum_r)
+        if (a[n - 1] * 3 == Pref[n - 1])
+            cnt[n - 1] = 1;
+        sums[n - 1] = cnt[n - 1];
+        for (int i = n - 2; i >= 0; i--)
         {
-            int l = left + 2, r = right, mid, res = right;
-            while (l <= r)
-            {
-                mid = l + (r - l) / 2;
-
-                if (Suf[mid] == sum_l && sum_l == Pref[mid - 1] - Pref[left])
-                {
-                    res = mid;
-                    r = mid - 1;
-                }
-                else
-                    l = mid + 1;
-            }
-            ans += right - res + 1;
-            left++;
-            sum_l += a[left];
-            sum_m -= a[left];
+            cnt[i] = (Suf[0] == Suf[i] * 3 ? 1 : 0);
+            sums[i] = sums[i + 1] + cnt[i];
         }
-        else if (sum_l < sum_r)
-        {
-            left++;
-            sum_l += a[left];
-            sum_m -= a[left];
-        }
-        else
-        {
-            right--;
-            sum_r += a[right];
-            sum_m -= a[right];
-        }
+        ans = sums[2];
     }
 
     cout << ans << "\n";
