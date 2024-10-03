@@ -2,10 +2,10 @@
 
 using namespace std;
 
-#warning change N = 1e6+10;
-constexpr int N = 20;
-int d[N], depth[N];
-bool Vis[N];
+// #warning change N = 1e6+10;
+constexpr int N = 1e6 + 10;
+int d[N];
+bool Vis[N], Off[N];
 vector<int> adj[N];
 
 int main()
@@ -21,33 +21,47 @@ int main()
         adj[a].push_back(b);
         adj[b].push_back(a);
     }
-    priority_queue<pair<int, int>> pq;
-    queue<pair<int, int>> q;
+
+    queue<int> q;
+    vector<int> V;
     cin >> p;
-    for (int i = 1; i <= p; i++)
+    int ans = 0;
+    for (int i = 0; i < p; i++)
     {
         cin >> a;
-        q.push({a, 0});
-        depth[a] = 1;
+        V.push_back(a);
     }
-    while (!q.empty())
+    for (int city : V)
     {
-        auto v = q.front();
-        q.pop();
-        if (!Vis[v.first])
-            for (int w : adj[v.first])
-                if (w != v.second)
+        int tmp_min = numeric_limits<int>::max(), City;
+        q.push(city);
+        d[city] = 0;
+        Vis[city] = 1;
+        while (!q.empty())
+        {
+            int v = q.front();
+            q.pop();
+            for (int w : adj[v])
+                if (!Vis[w])
                 {
-                    depth[w] = max(depth[v.first] + 1, depth[w]);
-                    q.push({w, v.first});
+                    d[w] = d[v] + 1;
+                    Vis[w] = 1;
+                    q.push(w);
                 }
+        }
 
-        Vis[v.first] = 1;
+        for (int i = n; i >= n - z + 1; i--)
+            if (!Off[i] && d[i] < tmp_min)
+            {
+                City = i;
+                tmp_min = d[i];
+            }
+
+        ans = max(ans, tmp_min);
+        Off[City] = 1;
+        for (int i = 1; i <= n; i++)
+            Vis[i] = 0, d[i] = 0;
     }
-    int ans = numeric_limits<int>::max();
-    for (int i = n; i >= n - z + 1; i--)
-        ans = min(ans, d[i]);
-
     cout << ans << "\n";
     return 0;
 }
