@@ -1,15 +1,18 @@
 #include <bits/stdc++.h>
 using namespace std;
-constexpr int M = 2e6 + 7;
-pair<int, int> ans[M];
+constexpr int M = 2e6 + 7, N = 1e6 + 10;
+int ans[M][2];
+char s[N];
 int main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
     int n, m, k, totalsum = 0, firstone = -1, lastone = -1, ptr1, ptr2, currentsum;
-    string s;
-    cin >> n >> m >> s;
+
+    cin >> n >> m;
+    cin.ignore(1, '\n');
+    cin.read(s, n);
     for (int i = 0; i < n; i++)
     {
         if (s[i] == 'T')
@@ -23,13 +26,14 @@ int main()
         }
     }
     for (int i = 0; i <= totalsum; i++)
-        ans[i] = {-1, -1};
+        ans[i][0] = -1, ans[i][1] = -1;
     ptr1 = 0;
     ptr2 = n - 1;
     currentsum = totalsum;
     while (currentsum > 0)
     {
-        ans[currentsum] = {ptr1, ptr2};
+        ans[currentsum][0] = ptr1;
+        ans[currentsum][1] = ptr2;
         if (s[ptr1] == 'T')
             ptr1++;
         else if (s[ptr2] == 'T')
@@ -55,7 +59,8 @@ int main()
     }
     while (currentsum > 0)
     {
-        ans[currentsum] = {ptr1, ptr2};
+        ans[currentsum][0] = ptr1;
+        ans[currentsum][1] = ptr2;
         if (s[ptr1] == 'T')
             ptr1++;
         else if (s[ptr2] == 'T')
@@ -70,10 +75,10 @@ int main()
     while (m--)
     {
         cin >> k;
-        if (ans[k].first == -1 || k > totalsum)
+        if (ans[k][0] == -1 || k > totalsum)
             cout << "NIE\n";
         else
-            cout << ans[k].first + 1 << ' ' << ans[k].second + 1 << '\n';
+            cout << ans[k][0] + 1 << ' ' << ans[k][1] + 1 << '\n';
     }
     return 0;
 }
