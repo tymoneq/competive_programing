@@ -22,7 +22,7 @@ int main()
                 firstone = i;
         }
     }
-    for (int i = 0; i < M; i++)
+    for (int i = 0; i <= totalsum; i++)
         ans[i] = {-1, -1};
     ptr1 = 0;
     ptr2 = n - 1;
@@ -70,10 +70,10 @@ int main()
     while (m--)
     {
         cin >> k;
-        if (ans[k].first != -1)
-            cout << ans[k].first + 1 << ' ' << ans[k].second + 1 << '\n';
-        else
+        if (ans[k].first == -1 || k > totalsum)
             cout << "NIE\n";
+        else
+            cout << ans[k].first + 1 << ' ' << ans[k].second + 1 << '\n';
     }
     return 0;
 }

@@ -13,7 +13,7 @@ int main()
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    int n, m, a, b;
+    int n, m, a, b, res = 0;
     cin >> n >> m;
 
     for (int i = 0; i <= n; i++)
@@ -42,11 +42,19 @@ int main()
                 {
                     D[i][w] = D[i][v] + 1;
                     Vis[i][w] = 1;
-                    q.push(w);
                 }
         }
     }
 
-    
+    for (int i = 1; i <= n; i++)
+        for (int j = i + 1; j <= n; j++)
+            for (int k = j + 1; k <= n; k++)
+            {
+                if (D[i][j] == 1 && D[i][k] == 1 && D[j][k] == 1)
+                    res++;
+                else if (D[i][j] != 1 && D[i][k] != 1 && D[j][k] != 1)
+                    res++;
+            }
+    cout << res << "\n";
     return 0;
 }
