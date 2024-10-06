@@ -43,7 +43,6 @@ int main()
                 }
         }
         cin >> sajz;
-
         for (int i = 0; i < sajz; i++)
         {
             cin >> s;
@@ -88,6 +87,7 @@ int main()
                     if (Sajz[v1] < Sajz[v2])
                         swap(v1, v2);
                     Sajz[v1] += Sajz[v2];
+                    Sajz[v2] = 0;
                     R[v2] = v1;
                 }
             }
