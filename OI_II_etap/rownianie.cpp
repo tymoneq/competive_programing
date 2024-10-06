@@ -1,8 +1,9 @@
 #include <bits/stdc++.h>
 
 using namespace std;
+typedef long long ll;
 map<pair<char, int>, pair<char, int>> R; // vertex repreezentant
-map<pair<char, int>, int> Sajz;
+
 inline pair<char, int> fint(pair<char, int> a) { return R[a] == a ? a : fint(R[a]); }
 
 int main()
@@ -11,79 +12,101 @@ int main()
     cin.tie(0);
     cout.tie(0);
     int x;
-
     cin >> x;
     while (x--)
     {
         int k, sajz;
         R.clear();
-        Sajz.clear();
-        string s;
+        map<pair<char, int>, ll> Sajz;
+        char s;
         cin >> k;
-        vector<int> length(k), l_rownanie, r_rownanie, r_pos, l_pos;
+        vector<int> length(k), r_pos, l_pos;
         vector<char> l_symbole, r_symbole;
 
         for (int &a : length)
             cin >> a;
 
-        cin >> sajz >> s;
+        cin >> sajz;
         for (int i = 0; i < sajz; i++)
         {
-            if (s[i] < 'a')
+            cin >> s;
+            if (s < 'a')
             {
-                l_symbole.push_back(s[i]);
-                l_pos.push_back(s[i] - '0');
-                l_rownanie.push_back(s[i] - '0');
+                l_symbole.push_back(s);
+                l_pos.push_back(s - '0');
             }
             else
-                for (int j = 0; j < length[s[i] - 'a']; j++)
+                for (int j = 0; j < length[s - 'a']; j++)
                 {
-                    l_symbole.push_back(s[i]);
+                    l_symbole.push_back(s);
                     l_pos.push_back(j);
-                    l_rownanie.push_back(-1);
                 }
         }
-        cin >> sajz >> s;
+        cin >> sajz;
+
         for (int i = 0; i < sajz; i++)
         {
-            if (s[i] < 'a')
+            cin >> s;
+            if (s < 'a')
             {
-                r_symbole.push_back(s[i]);
-                r_pos.push_back(100);
-                r_rownanie.push_back(s[i] - '0');
+                r_symbole.push_back(s);
+                r_pos.push_back(s - '0');
             }
             else
-                for (int j = 0; j < length[s[i] - 'a']; j++)
+                for (int j = 0; j < length[s - 'a']; j++)
                 {
-                    r_symbole.push_back(s[i]);
+                    r_symbole.push_back(s);
                     r_pos.push_back(j);
-                    r_rownanie.push_back(-1);
                 }
         }
-        bool T = 1;
-        R[{'1', 1}] = {'1', 1};
-        R[{'0', 0}] = {'0', 0};
-        Sajz[{'1', 1}] = 1;
-        Sajz[{'0', 0}] = 1;
-        if (l_rownanie.size() == r_rownanie.size())
+        if (l_symbole.size() == r_symbole.size())
         {
-            for (int i = 0; i < l_rownanie.size(); i++)
+            for (int i = 0; i < r_symbole.size(); i++)
             {
-                
+                if (R.find({l_symbole[i], l_pos[i]}) == R.end() && R.find({r_symbole[i], r_pos[i]}) == R.end())
+                {
+                    Sajz[{l_symbole[i], l_pos[i]}] = 2;
+                    R[{l_symbole[i], l_pos[i]}] = {l_symbole[i], l_pos[i]};
+                    R[{r_symbole[i], r_pos[i]}] = {l_symbole[i], l_pos[i]};
+                }
+                else if (R.find({l_symbole[i], l_pos[i]}) != R.end() && R.find({r_symbole[i], r_pos[i]}) == R.end())
+                {
+                    auto v = fint({l_symbole[i], l_pos[i]});
+                    Sajz[v]++;
+                    R[{r_symbole[i], r_pos[i]}] = v;
+                }
+                else if (R.find({l_symbole[i], l_pos[i]}) == R.end() && R.find({r_symbole[i], r_pos[i]}) != R.end())
+                {
+                    auto v = fint({r_symbole[i], r_pos[i]});
+                    Sajz[v]++;
+                    R[{l_symbole[i], l_pos[i]}] = v;
+                }
+                else
+                {
+                    auto v1 = fint({l_symbole[i], l_pos[i]});
+                    auto v2 = fint({r_symbole[i], r_pos[i]});
+                    if (Sajz[v1] < Sajz[v2])
+                        swap(v1, v2);
+                    Sajz[v1] += Sajz[v2];
+                    R[v2] = v1;
+                }
             }
-            if (T)
-            {
-                for (auto el : R)
-                    fint(el.second);
-                set<pair<char, int>> ss;
+            if (R.find({'1', 1}) != R.end() && R.find({'0', 0}) != R.end() && fint({'1', 1}) == fint({'0', 0}))
+                cout << "0\n";
 
+            else
+            {
+                ll power = 0;
+                if (R.find({'1', 1}) != R.end())
+                    power--;
+                if (R.find({'0', 0}) != R.end())
+                    power--;
                 for (auto el : R)
-                    if (el.second.first != '1' && el.second.first != '0')
-                        ss.insert(el.second);
+                    if (fint(el.first) == el.first)
+                        power++;
 
                 vector<int> ans = {1};
-                int j = ss.size();
-                while (j--)
+                while (power--)
                 {
                     for (int i = 0; i < ans.size() - 1; i++)
                     {
@@ -106,8 +129,6 @@ int main()
                     cout << ans[i];
                 cout << "\n";
             }
-            else
-                cout << 0 << "\n";
         }
         else
             cout << "0\n";
