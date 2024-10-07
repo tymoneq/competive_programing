@@ -25,15 +25,13 @@ int main()
                 firstone = i;
         }
     }
-    for (int i = 0; i <= totalsum; i++)
-        ans[i][0] = -1, ans[i][1] = -1;
     ptr1 = 0;
     ptr2 = n - 1;
     currentsum = totalsum;
     while (currentsum > 0)
     {
-        ans[currentsum][0] = ptr1;
-        ans[currentsum][1] = ptr2;
+        ans[currentsum][0] = ptr1 + 1;
+        ans[currentsum][1] = ptr2 + 1;
         if (s[ptr1] == 'T')
             ptr1++;
         else if (s[ptr2] == 'T')
@@ -59,8 +57,8 @@ int main()
     }
     while (currentsum > 0)
     {
-        ans[currentsum][0] = ptr1;
-        ans[currentsum][1] = ptr2;
+        ans[currentsum][0] = ptr1 + 1;
+        ans[currentsum][1] = ptr2 + 1;
         if (s[ptr1] == 'T')
             ptr1++;
         else if (s[ptr2] == 'T')
@@ -75,10 +73,10 @@ int main()
     while (m--)
     {
         cin >> k;
-        if (ans[k][0] == -1 || k > totalsum)
+        if (ans[k][0] == 0 || k > totalsum)
             cout << "NIE\n";
         else
-            cout << ans[k][0] + 1 << ' ' << ans[k][1] + 1 << '\n';
+            cout << ans[k][0] << ' ' << ans[k][1] << '\n';
     }
     return 0;
 }
