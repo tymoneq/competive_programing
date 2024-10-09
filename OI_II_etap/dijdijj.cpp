@@ -6,11 +6,12 @@ typedef long long ll;
 constexpr int N = 1e5 + 10;
 ll D[N];
 bool Vis[N];
-set<pair<int, int>> adj[N];
+vector<pair<int, int>> adj[N];
 struct edge
 {
     int a, b, c;
 };
+pair<int, int> Parent[N];
 
 int main()
 {
@@ -24,8 +25,8 @@ int main()
     while (m--)
     {
         cin >> a >> b >> c;
-        adj[a].insert({b, c});
-        adj[b].insert({a, c});
+        adj[a].push_back({b, c});
+        adj[b].push_back({a, c});
     }
 
     for (int i = 1; i <= n; i++)
@@ -33,10 +34,23 @@ int main()
     priority_queue<pair<ll, int>, vector<pair<ll, int>>, greater<pair<ll, int>>> pq;
     pq.push({0, 1});
     D[1] = 0;
-    while (/* condition */)
+    while (!pq.empty())
     {
-        /* code */
+        int v = pq.top().second;
+        pq.pop();
+        if (!Vis[v])
+        {
+            for (auto w : adj[v])
+                if (D[w.first] > D[v] + w.second)
+                {
+                    D[w.first] = D[v] + w.second;
+                    Parent[w.first] = {v, w.second};
+                    pq.push({D[w.first], w.first});
+                }
+        }
     }
-    
+
+    pair<int, int> p = {n, 0};
+    set<edge> E;
     return 0;
 }
