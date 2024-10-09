@@ -43,7 +43,7 @@ int main()
         Kowal[i] = BASE;
     }
 
-    for (int i = 0; i < k; i++)
+    while (k--)
     {
         cin >> a >> b;
         while (b--)
