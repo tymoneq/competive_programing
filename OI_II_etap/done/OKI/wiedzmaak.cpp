@@ -27,6 +27,8 @@ struct wiedzmakComparator
 
     bool operator()(wiedzmak &lhs, wiedzmak &rhs)
     {
+        if (lhs.time == rhs.time)
+            return lhs.Swords < rhs.Swords;
         return lhs.time > rhs.time;
     }
 };
@@ -81,22 +83,27 @@ int main()
         auto v = pq.top();
         pq.pop();
         if (v.v == n)
-            res = min(res, D[v.v].time);
-
+        {
+            res = min(res, v.time);
+            continue;
+        }
         for (auto w : adj[v.v])
             if ((w.monsters & v.Swords) == w.monsters)
             {
-                if (D[w.end].time > w.cost + D[v.v].time)
+                if (D[w.end].time > w.cost + v.time)
                 {
-                    D[w.end].time = w.cost + D[v.v].time;
+                    D[w.end].time = w.cost + v.time;
                     D[w.end].Swords = v.Swords | Kowal[w.end];
-                    pq.push({D[w.end].time, w.end, (v.Swords | Kowal[w.end])});
+                    if (w.end != n)
+                        pq.push({D[w.end].time, w.end, (v.Swords | Kowal[w.end])});
                 }
                 else if ((v.Swords | D[w.end].Swords) != D[w.end].Swords)
                 {
-                    D[w.end].time = w.cost + D[v.v].time;
+
+                    D[w.end].time = w.cost + v.time;
                     D[w.end].Swords = v.Swords | Kowal[w.end];
-                    pq.push({D[w.end].time, w.end, (v.Swords | Kowal[w.end])});
+                    if (w.end != n)
+                        pq.push({D[w.end].time, w.end, (v.Swords | Kowal[w.end])});
                 }
                 if (w.end == n)
                     res = min(res, D[w.end].time);
