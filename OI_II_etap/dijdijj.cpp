@@ -27,7 +27,6 @@ int main()
     {
         cin >> a >> b >> c;
         adj[a].push_back({b, c, i});
-        adj[b].push_back({a, c, i});
     }
 
     for (int i = 1; i <= n; i++)

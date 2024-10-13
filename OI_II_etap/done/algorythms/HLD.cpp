@@ -1,151 +1,154 @@
 #include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
 
 using namespace std;
+using namespace __gnu_pbds;
 
-// #pragma message("CHANGE MAXN TO 1E4+10 AND BASE 1 << 14")
-constexpr int MAXN = 1e4+10;
-constexpr int Base = 1 << 14;
+constexpr int N = 1e5 + 10, base = 1 << 18;
 
-int Parent[MAXN], Depth[MAXN], Heavy[MAXN], Head[MAXN], Pos[MAXN];
-int cur_pos;
-int Tree[Base << 1];
-vector<int> adj[MAXN];
-int EDGE[MAXN];
+int Sajz[N], Pre[N], Parent[N], Post[N], nxt = 0, Path_end[N], depth[N];
+vector<int> adj[N];
+int Tree[base << 1], Tree_lazy[base << 1];
 
-int dfs(int v)
+inline void size_dfs(int v, int p)
 {
-    int size = 1;
-    int max_c_size = 0;
-    for (int c : adj[v])
-        if (c != Parent[v])
+    Sajz[v] = 1;
+    depth[v] = depth[p] + 1;
+    Parent[v] = p;
+    for (int w : adj[v])
+        if (w != p)
         {
-            Parent[c] = v, Depth[c] = Depth[v] + 1;
-            int c_size = dfs(c);
-            size += c_size;
-            if (c_size > max_c_size)
-                max_c_size = c_size, Heavy[v] = c;
+            size_dfs(w, v);
+            Sajz[v] += Sajz[w];
         }
-
-    return size;
 }
 
-void decompose(int v, int h)
+inline void make_hld(int v, int p)
 {
-    Head[v] = h, Pos[v] = cur_pos++;
-    if (Heavy[v] != -1)
-        decompose(Heavy[v], h);
+    Pre[v] = nxt;
 
-    for (int c : adj[v])
-        if (c != Parent[v] && c != Heavy[v])
-            decompose(c, c);
-}
+    int heavy = 0;
+    for (int w : adj[v])
+        if (w != p && Sajz[w] > Sajz[heavy])
+            heavy = w;
 
-void upt(int v)
-{
-    Tree[Base + Pos[v + 1] + 1] = EDGE[v];
-    int w = Base + Pos[v + 1];
-    w /= 2;
-    while (w > 0)
+    if (heavy)
     {
-        Tree[w] = max(Tree[w * 2], Tree[w * 2 + 1]);
-        w /= 2;
+        nxt++;
+        Path_end[heavy] = Path_end[v];
+        make_hld(heavy, v);
+    }
+    for (int w : adj[v])
+        if (w != p && w != heavy)
+        {
+            nxt++;
+            Path_end[w] = w;
+            make_hld(w, v);
+        }
+    Post[v] = nxt;
+}
+
+void push(int v, int l, int r)
+{
+    Tree[l] += Tree_lazy[v];
+    Tree[r] += Tree_lazy[v];
+    Tree_lazy[l] += Tree_lazy[v];
+    Tree_lazy[r] += Tree_lazy[v];
+
+    Tree_lazy[v] = 0;
+}
+
+inline void add(int v, int a, int b, int lo, int hi, int x)
+{
+    if (hi < a || lo > b)
+        return;
+
+    if (lo <= a && b <= hi)
+    {
+        Tree[v] += x;
+        Tree_lazy[v] += x;
+    }
+    else
+    {
+        int l = 2 * v, r = v * 2 + 1, mid = (a + b) / 2;
+        push(v, l, r);
+
+        add(l, a, mid, lo, hi, x);
+        add(r, mid + 1, b, lo, hi, x);
+
+        Tree[v] = max(Tree[l], Tree[r]);
     }
 }
 
-int segment_tree_query(int a, int b)
+inline int querry(int v, int a, int b, int lo, int hi)
 {
-    int l = a + Base, r = b + Base + 2;
-    int max_in_range = -1;
-    while (l / 2 != r / 2)
-    {
-        if (l % 2 == 0)
-            max_in_range = max(max_in_range, Tree[l + 1]);
-        if (r % 2 == 1)
-            max_in_range = max(max_in_range, Tree[r - 1]);
+    if (hi < a || lo > b)
+        return numeric_limits<int>::min();
 
-        l /= 2, r /= 2;
+    if (lo <= a && b <= hi)
+        return Tree[v];
+
+    else
+    {
+        int l = 2 * v, r = v * 2 + 1, mid = (a + b) / 2;
+        push(v, l, r);
+        return max(querry(l, a, mid, lo, hi), querry(r, mid + 1, b, lo, hi));
     }
-    return max_in_range;
 }
 
-int query(int a, int b)
-{
-    int res = 0;
-    for (; Head[a] != Head[b]; b = Parent[Head[b]])
-    {
-        if (Depth[Head[a]] > Depth[Head[b]])
-            swap(a, b);
-        int cur_heavy_path_max = segment_tree_query(Pos[Head[b]], Pos[b]);
-        res = max(res, cur_heavy_path_max);
-    }
-
-    if (Depth[a] > Depth[b])
-        swap(a, b);
-    int last_heavy_path_max = segment_tree_query(Pos[Head[b]], Pos[b]);
-    res = max(res, last_heavy_path_max);
-
-    return res;
-}
 int main()
 {
     ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-    int t, n, a, b, c;
-    string s;
-    cin >> t;
+    cin.tie();
+    cout.tie();
 
-    while (t--)
+    int n, q, a, b;
+    string type;
+
+    cin >> n;
+
+    for (int i = 1; i < n; i++)
     {
-        // cleaning tables
-        cur_pos = 0;
-        for (int i = 0; i < MAXN; i++)
+        cin >> a >> b;
+        adj[a].push_back(b);
+        adj[b].push_back(a);
+    }
+    for (int i = base; i < (base << 1); i++)
+        Tree[i] = numeric_limits<int>::min();
+    for (int i = base - 1; i >= 0; i--)
+        Tree[i] = numeric_limits<int>::min();
+
+    Path_end[1] = 1;
+    size_dfs(1, 0);
+    make_hld(1, 0);
+
+    cin >> q;
+
+    while (q--)
+    {
+        cin >> type >> a >> b;
+        if (type == "add")
+            add(1, 0, base - 1, Pre[a], Post[a], b);
+
+        else
         {
-            Parent[i] = 0, Depth[i] = 0, Heavy[i] = -1, Head[i] = 0, Pos[i] = 0;
-            adj[i].clear();
-        }
+            int res = numeric_limits<int>::min();
 
-        cin >> n;
-
-        // reading data and making tree
-        for (int i = 0; i < n - 1; i++)
-        {
-            cin >> a >> b >> c;
-            adj[a].push_back(b);
-            adj[b].push_back(a);
-            EDGE[i + 1] = c;
-        }
-
-        dfs(1);
-        decompose(1, 1);
-
-        // creating seqment tree
-
-        Tree[Base + 1] = -1;
-        for (int i = 2; i <= n; i++)
-            Tree[Base + Pos[i] + 1] = EDGE[i - 1];
-
-        for (int i = Base - 1; i > 0; i--)
-            Tree[i] = max(Tree[i * 2], Tree[2 * i + 1]);
-
-        while (1)
-        {
-            cin >> s;
-            if (s == "DONE")
-                break;
-
-            cin >> a >> b;
-            if (s == "QUERY")
-                cout << query(a, b) << "\n";
-
-            else if (s == "CHANGE")
+            while (Path_end[a] != Path_end[b])
             {
-                EDGE[a] = b;
-                upt(a);
-            }
-        }
+                if (depth[Path_end[a]] < depth[Path_end[b]])
+                    swap(a, b);
 
-        cout << "\n";
+                res = max(res, querry(1, 0, base - 1, Pre[Path_end[a]], Pre[a]));
+
+                a = Parent[Path_end[a]];
+            }
+            if (Pre[a] < Pre[b])
+                swap(a, b);
+
+            res = max(res, querry(1, 0, base - 1, Pre[b], Pre[a]));
+            cout << res << "\n";
+        }
     }
 
     return 0;
