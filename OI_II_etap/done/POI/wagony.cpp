@@ -20,16 +20,18 @@ int main()
     cout.tie(0);
 
     cin >> n >> d >> a >> b;
-    for (int i = 1; i <= n; i++)
+    for (int i = 0; i <= n; i++)
         dp[i] = INF;
 
     dp[1] = 0;
 
     for (int x = 2; x <= n; x++)
     {
-        for (int i = (x - d) / 2; i <= (x + d) / 2; i++)
+        for (int i = (x - d + 1) / 2; i <= (x + d) / 2; i++)
         {
             int j = x - i;
+            if (j < 0 || i < 0)
+                continue;
             dp[x] = min(dp[x], dp[i] + dp[j] + f(i, j));
         }
     }
