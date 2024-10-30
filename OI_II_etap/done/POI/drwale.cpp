@@ -2,6 +2,10 @@
 
 using namespace std;
 
+constexpr int A = 3e6 + 10;
+
+bool dp[A];
+
 int main()
 {
     ios_base::sync_with_stdio(0);
@@ -21,19 +25,34 @@ int main()
     }
 
     sort(drewno.begin(), drewno.end());
+
     int last_element = drewno[n - 1];
-    vector<vector<int>> dp(n+1, vector<int>((total_sum - last_element + 1) / 2));
+    dp[0] = 1;
+    auto it = drewno.end();
+    it--;
 
-    for (int i = 1; i < n; i++)
-        for (int w = 0; w <= (total_sum - last_element + 1) / 2; w++)
+    drewno.erase(it);
+    total_sum -= last_element;
+    total_sum /= 2;
+    for (int d : drewno)
+        for (int i = total_sum; i > 0; i--)
         {
-            if (w < drewno[i - 1])
-                dp[i][w] = dp[i - 1][w];
+            if (i < d)
+                break;
 
-            else
-                dp[i][w] = max(dp[i - 1][w], dp[i - 1][w - drewno[i - 1]] + drewno[i - 1]);
+            if (dp[i - d])
+                dp[i] = 1;
         }
 
-    cout << dp[n - 1][(total_sum - last_element + 1) / 2 -1] + last_element << "\n";
+    int half_sum = 0;
+
+    for (int i = total_sum; i > 0; i--)
+        if (dp[i])
+        {
+            half_sum = i;
+            break;
+        }
+
+    cout << half_sum + last_element << "\n";
     return 0;
 }
