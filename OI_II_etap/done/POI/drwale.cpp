@@ -4,8 +4,6 @@ using namespace std;
 
 constexpr int A = 3e6 + 10;
 
-bool dp[A];
-
 int main()
 {
     ios_base::sync_with_stdio(0);
@@ -27,22 +25,28 @@ int main()
     sort(drewno.begin(), drewno.end());
 
     int last_element = drewno[n - 1];
-    dp[0] = 1;
     auto it = drewno.end();
     it--;
 
     drewno.erase(it);
     total_sum -= last_element;
     total_sum /= 2;
-    for (int d : drewno)
-        for (int i = total_sum; i > 0; i--)
-        {
-            if (i < d)
-                break;
 
-            if (dp[i - d])
-                dp[i] = 1;
+    map<int, int> CNT;
+    for (int d : drewno)
+        CNT[d]++;
+
+    for (auto &el : CNT)
+        while (el.second > 2)
+        {
+            CNT[el.first * 2]++;
+            el.second -= 2;
         }
+
+    bitset<A> dp(1);
+    for (auto element : CNT)
+        for (int i = 1; i <= element.second; i++)
+            dp |= dp << element.first;
 
     int half_sum = 0;
 
