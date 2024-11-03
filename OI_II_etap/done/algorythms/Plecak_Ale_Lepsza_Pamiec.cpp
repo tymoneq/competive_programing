@@ -22,6 +22,9 @@ int main()
         for (int waga = w; waga >= Przedmioty[i].first; waga--)
             plecak[waga] = max(plecak[waga], plecak[waga - Przedmioty[i].first] + Przedmioty[i].second);
 
-    cout << plecak[w] << "\n";
+    int mx = 0;
+    for (int i = 0; i <= w; i++)
+        mx = max(plecak[i], mx);
+    cout << mx << "\n";
     return 0;
 }
