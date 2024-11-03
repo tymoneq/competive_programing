@@ -49,20 +49,12 @@ int main()
     // knapsack problem
     dp[0] = -1;
 
-    // optymazing for sqrt(N)
-
-    vector<pair<int, int>> uniqueValues;
     for (auto el : Cnt)
-        uniqueValues.push_back({el.first * el.second, el.second});
-
-    for (auto val : uniqueValues)
-        for (int i = n; i > 0; i--)
+        for (int k = 1; k <= el.second; k *= 2)
         {
-            if (i - val.first < 0)
-                break;
-
-            if (dp[i - val.first] != INF)
-                dp[i] = min(dp[i], dp[i - val.first] + val.second);
+            int nw = k * el.first;
+            for (int i = n; i >= nw; i--)
+                dp[i] = min(dp[i], dp[i - nw] + k);
         }
 
     // finding best answer
