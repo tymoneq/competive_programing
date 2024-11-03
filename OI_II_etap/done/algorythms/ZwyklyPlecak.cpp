@@ -19,6 +19,8 @@ int main()
     for (int i = 1; i <= n; i++)
         for (int waga = 0; waga <= w; waga++)
         {
+            // przepisywujemy najlepszy wynik z poprzedniego stanu do aktualnego stanu
+            plecak[i][waga] = plecak[i - 1][waga];
             // sprawdzamy czy waga przedmiotu nie jest większa od aktualnie rozpatrywanej wagi
             if (Przedmioty[i - 1].first > waga)
                 continue;
