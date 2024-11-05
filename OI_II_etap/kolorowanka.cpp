@@ -178,6 +178,31 @@ inline ll querrySegmentA2(int r)
     }
     return sum;
 }
+
+inline void uptSegmentA1(int v, int val)
+{
+    v += base;
+    SegmentTreeA1[v] += val;
+    v /= 2;
+    while (v > 0)
+    {
+        SegmentTreeA1[v] = SegmentTreeA1[v * 2] + SegmentTreeA1[v * 2 + 1];
+        v /= 2;
+    }
+}
+
+inline void uptSegmentA2(int v, int val)
+{
+    v += base;
+    SegmentTreeA2[v] += val;
+    v /= 2;
+    while (v > 0)
+    {
+        SegmentTreeA2[v] = SegmentTreeA2[v * 2] + SegmentTreeA2[v * 2 + 1];
+        v /= 2;
+    }
+}
+
 int main()
 {
     ios_base::sync_with_stdio(0);
@@ -250,33 +275,61 @@ int main()
         char C, znak;
         int val;
         cin >> C >> znak >> val;
-
-        if (znak == '-')
+        if (C == 'B')
         {
-            uptSegment1(depth1[val], -1);
-            uptSegment2(depth2[val], -1);
-            zbiorB.erase(val);
-            if (zbiorA.find(val) != zbiorA.end())
-                res++;
+            if (znak == '-')
+            {
+                uptSegment1(depth1[val], -1);
+                uptSegment2(depth2[val], -1);
+                zbiorB.erase(val);
+                if (zbiorA.find(val) != zbiorA.end())
+                    res++;
 
-            if (secondCentroid)
-                res -= min(querrySegmentA1(depth1[val]), querrySegmentA2(depth2[val]));
-            else
-                res -= querrySegmentA1(depth1[val]);
+                if (secondCentroid)
+                    res -= min(querrySegmentA1(depth1[val]), querrySegmentA2(depth2[val]));
+                else
+                    res -= querrySegmentA1(depth1[val]);
+            }
+            if (znak == '+')
+            {
+                uptSegment1(depth1[val], 1);
+                uptSegment2(depth2[val], 1);
+                zbiorB.insert(val);
+                if (zbiorA.find(val) != zbiorA.end())
+                    res--;
+                if (secondCentroid)
+                    res += min(querrySegmentA1(depth1[val]), querrySegmentA2(depth2[val]));
+                else
+                    res += querrySegmentA1(depth1[val]);
+            }
         }
-        if (znak == '+')
+        else
         {
-            uptSegment1(depth1[val], 1);
-            uptSegment2(depth2[val], 1);
-            zbiorB.insert(val);
-            if (zbiorA.find(val) != zbiorA.end())
-                res--;
-            if (secondCentroid)
-                res += min(querrySegmentA1(depth1[val]), querrySegmentA2(depth2[val]));
-            else
-                res += querrySegmentA1(depth1[val]);
+            if (znak == '-')
+            {
+                uptSegmentA1(depth1[val], -1);
+                uptSegmentA2(depth2[val], -1);
+                zbiorA.erase(val);
+                if (zbiorB.find(val) != zbiorB.end())
+                    res++;
+                if (secondCentroid)
+                    res -= min(querrySegment1(depth1[val]), querrySegment2(depth2[val]));
+                else
+                    res -= querrySegment1(depth1[val]);
+            }
+            if (znak == '+')
+            {
+                uptSegmentA1(depth1[val], 1);
+                uptSegmentA2(depth2[val], 1);
+                zbiorA.insert(val);
+                if (zbiorB.find(val) != zbiorB.end())
+                    res--;
+                if (secondCentroid)
+                    res += min(querrySegment1(depth1[val]), querrySegment2(depth2[val]));
+                else
+                    res += querrySegment1(depth1[val]);
+            }
         }
-
         cout << res << '\n';
     }
     return 0;
