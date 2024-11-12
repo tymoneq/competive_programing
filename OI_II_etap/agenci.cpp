@@ -2,7 +2,7 @@
 
 using namespace std;
 
-constexpr int N = 15, INF = 1e7;
+constexpr int N = 5e5 + 10, INF = 1e8;
 bool Agent[N];
 vector<int> adj[N];
 int dp[N][3]; // 0-> dp w górę 1-> dp w dół
@@ -32,7 +32,7 @@ inline void calc(int v, int p)
     }
     else
     {
-        int mx = 0;
+        int mx = -INF;
         for (int w : adj[v])
             if (w != p)
                 mx = max(mx, suma - dp[w][2] + 1 + dp[w][0]);
@@ -40,14 +40,14 @@ inline void calc(int v, int p)
         dp[v][0] = mx;
         dp[v][2] = max(suma, mx);
 
-        mx = 0;
+        mx = -INF;
         for (int w : adj[v])
             if (w != p)
                 mx = max(mx, suma - dp[w][2] + 1 + dp[w][1]);
 
         dp[v][1] = max(suma, mx);
 
-        mx = 0;
+        mx = -INF;
         for (int w : adj[v])
             for (int u : adj[v])
                 if (w != p && w != u && u != p)
