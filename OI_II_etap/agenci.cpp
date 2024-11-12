@@ -23,7 +23,7 @@ inline void calc(int v, int p)
         dp[v][0] = suma;
         dp[v][1] = -INF;
 
-        int mx = 0;
+        int mx = -INF;
         for (int w : adj[v])
             if (w != p)
                 mx = max(mx, suma - dp[w][2] + 1 + dp[w][1]);
