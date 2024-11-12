@@ -7,6 +7,31 @@ bool Agent[N];
 vector<int> adj[N];
 int dp[N][3]; // 0-> dp w górę 1-> dp w dół
 
+inline vector<int> innerDP(int v, int sum, int p)
+{
+    vector<vector<int>> innerDP(adj[v].size(), vector<int>(3, -INF)); // 0-> w góre 1-> w dół 2-> po dwóch indeksach
+
+    int indx = -1;
+    for (int w : adj[v])
+        if (w != p)
+        {
+            indx++;
+            if (indx == 0)
+            {
+                innerDP[0][0] = sum - dp[w][2] + 1 + dp[w][0];
+                innerDP[0][1] = sum - dp[w][2] + 1 + dp[w][1];
+            }
+            else
+            {
+                innerDP[indx][0] = max(innerDP[indx - 1][0], sum - dp[w][2] + 1 + dp[w][0]);
+                innerDP[indx][1] = max(innerDP[indx - 1][1], sum - dp[w][2] + 1 + dp[w][1]);
+                innerDP[indx][2] = max(innerDP[indx - 1][2], max(dp[w][0] + innerDP[indx - 1][1], innerDP[indx - 1][0] + dp[w][1]) - dp[w][2] + 1);
+            }
+        }
+
+    return innerDP[max(indx, 0)];
+}
+
 inline void calc(int v, int p)
 {
     int suma = 0;
@@ -18,42 +43,19 @@ inline void calc(int v, int p)
             suma += dp[w][2];
         }
 
+    vector<int> innerdp = innerDP(v, suma, p);
+
     if (Agent[v])
     {
         dp[v][0] = suma;
         dp[v][1] = -INF;
-
-        int mx = -INF;
-        for (int w : adj[v])
-            if (w != p)
-                mx = max(mx, suma - dp[w][2] + 1 + dp[w][1]);
-
-        dp[v][2] = max(suma, mx);
+        dp[v][2] = max(suma, innerdp[1]);
     }
     else
     {
-        int mx = -INF;
-        for (int w : adj[v])
-            if (w != p)
-                mx = max(mx, suma - dp[w][2] + 1 + dp[w][0]);
-
-        dp[v][0] = mx;
-        dp[v][2] = max(suma, mx);
-
-        mx = -INF;
-        for (int w : adj[v])
-            if (w != p)
-                mx = max(mx, suma - dp[w][2] + 1 + dp[w][1]);
-
-        dp[v][1] = max(suma, mx);
-
-        mx = -INF;
-        for (int w : adj[v])
-            for (int u : adj[v])
-                if (w != p && w != u && u != p)
-                    mx = max(mx, suma - dp[w][2] - dp[u][2] + 2 + dp[w][0] + dp[u][1]);
-
-        dp[v][2] = max(dp[v][2], mx);
+        dp[v][0] = innerdp[0];
+        dp[v][1] = max(suma, innerdp[1]);
+        dp[v][2] = max({suma, innerdp[0], innerdp[2]});
     }
 }
 
