@@ -3,7 +3,17 @@
 using namespace std;
 
 typedef long long ll;
-
+char flip(char c)
+{
+    if ('a' <= c && c <= 'z')
+    {
+        return (c - 'a') + 'A';
+    }
+    else
+    {
+        return (c - 'A') + 'a';
+    }
+}
 int main()
 {
     ios_base::sync_with_stdio(0);
@@ -14,10 +24,6 @@ int main()
     int q;
     cin >> s >> q;
 
-    set<int> Normal, Reversed;
-    Normal = {0, 3, 5, 6};
-    Reversed = {1, 2, 4, 7};
-
     while (q--)
     {
         ll zapytanie;
@@ -26,46 +32,14 @@ int main()
         zapytanie--;
 
         ll indxWCiago = zapytanie % (ll)s.size();
-        ll pozycja = zapytanie % (ll)(8 * s.size());
-        ll segment = zapytanie % (64 * s.size());
-        segment /= (8 * s.size());
-        pozycja /= s.size();
+        ll blk = zapytanie / s.size();
 
-        if (Normal.count(segment))
-        {
-            if (Normal.count(pozycja))
-                cout << s[indxWCiago] << " ";
-
-            else
-            {
-                char ans;
-                if (s[indxWCiago] < 97)
-                    ans = s[indxWCiago] + 32;
-
-                else
-                    ans = s[indxWCiago] - 32;
-
-                cout << ans << ' ';
-            }
-        }
+        if (__builtin_popcountll(blk) % 2)
+            cout << flip(s[indxWCiago]);
         else
-        {
-            if (Normal.count(pozycja))
-            {
-                char ans;
-                if (s[indxWCiago] < 97)
-                    ans = s[indxWCiago] + 32;
+            cout << s[indxWCiago];
 
-                else
-                    ans = s[indxWCiago] - 32;
-
-                cout << ans << ' ';
-            }
-            else
-                cout << s[indxWCiago] << " ";
-        }
+        cout << "\n";
     }
-    cout << "\n";
-
     return 0;
 }
