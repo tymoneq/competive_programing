@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-constexpr int N = 1e5 + 10, K = 510;
+#warning change N and K
+constexpr int N = 20, K = 5;
 typedef long long ll;
 constexpr ll INF = -1;
 
