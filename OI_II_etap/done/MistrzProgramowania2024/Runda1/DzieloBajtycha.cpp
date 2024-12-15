@@ -2,7 +2,7 @@
 using namespace std;
 
 #warning change N and K
-constexpr int N = 20, K = 5;
+constexpr int N = 1e5 + 10, K = 510;
 typedef long long ll;
 constexpr ll INF = -1;
 
