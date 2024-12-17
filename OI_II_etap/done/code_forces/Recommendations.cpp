@@ -8,12 +8,6 @@ struct Recommendations
 {
     int l, r, id;
 
-    const bool operator()(Recommendations &lhs, Recommendations &rhs)
-    {
-        if (lhs.l == rhs.l)
-            return lhs.r > rhs.r;
-        return lhs.l < rhs.l;
-    }
 };
 
 class Solve
@@ -52,6 +46,12 @@ public:
 
         FOR(i, n, 0)
         {
+            if (zakazane.count(i))
+            {
+                poczontki.insert(Rekomendacje[i].l);
+                konce.insert({Rekomendacje[i].r, i});
+                continue;
+            }
             while (!konce.empty() && konce.begin()->first < Rekomendacje[i].l)
             {
                 int id = konce.begin()->second;
@@ -61,13 +61,6 @@ public:
                     poczontki.erase(it);
 
                 konce.erase(konce.begin());
-            }
-
-            if (zakazane.count(i))
-            {
-                poczontki.insert(Rekomendacje[i].l);
-                konce.insert({Rekomendacje[i].r, i});
-                continue;
             }
 
             int poczontekzakresu = Rekomendacje[i].l;
@@ -80,12 +73,13 @@ public:
                 poczontekzakresu = min(*it, poczontekzakresu);
             }
 
-            auto it = konce.lower_bound({koniecZakres, n});
+            auto it = konce.lower_bound({koniecZakres, -1});
 
             if (it != konce.end())
                 koniecZakres = max(koniecZakres, it->first);
-
-            Wynik[Rekomendacje[i].id] = koniecZakres - poczontekzakresu + 1 - (Rekomendacje[i].r - Rekomendacje[i].l + 1);
+            else
+                koniecZakres = 0;
+            Wynik[Rekomendacje[i].id] = max(koniecZakres - poczontekzakresu + 1 - (Rekomendacje[i].r - Rekomendacje[i].l + 1), 0);
 
             poczontki.insert(Rekomendacje[i].l);
             konce.insert({Rekomendacje[i].r, i});
