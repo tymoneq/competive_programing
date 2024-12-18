@@ -24,10 +24,10 @@ public:
         minCost[i][j][1] = val;
         if (lewyStan < prawyStan)
 
-            minCost[i - 1][0][1] == val ? minCost[i][j][2] = minCost[i - 1][0][2] + 1 : 1;
+            minCost[i - 1][0][1] == val ? minCost[i][j][2] = minCost[i - 1][0][2] + 1 :  minCost[i][j][2] = 1;
 
         else
-            minCost[i - 1][1][1] == val ? minCost[i][j][2] = minCost[i - 1][1][2] + 1 : 1;
+            minCost[i - 1][1][1] == val ? minCost[i][j][2] = minCost[i - 1][1][2] + 1 :  minCost[i][j][2] = 1;
     }
 
     inline int solve()
