@@ -34,6 +34,7 @@ protected:
     vector<vector<int>> Graf;
     vector<int> Dist;
     vector<bool> Vis;
+    vector<bool> OnTheGraph;
     set<Cow, CowElsieComparator> Bessie;
     set<Cow, CowBessieComparator> Elsie;
     queue<Cow> KolejkaTworzenieGrafu;
@@ -45,6 +46,7 @@ public:
         KolejkaBFS.push(i);
         Dist[i] = 1;
         Vis[i] = true;
+        OnTheGraph[i] = true;
         KolejkaTworzenieGrafu.push({bessie, elsie, i});
     }
 
@@ -52,6 +54,7 @@ public:
     {
         cin >> N >> D;
 
+        OnTheGraph.resize(N + N + 2);
         Dist.resize((N + 1) * 2, INF);
         Vis.resize((N + 1) * 2);
         Graf.resize((N + 1) * 2);
@@ -98,6 +101,11 @@ public:
 
                 while (PierwszaNajwieksza->ElsieTaste >= max((krowa.ElsieTaste - D), 1))
                 {
+                    if (OnTheGraph[PierwszaNajwieksza->id])
+                        continue;
+
+                    OnTheGraph[PierwszaNajwieksza->id] = true;
+
                     To_erase.push_back(*PierwszaNajwieksza);
                     Graf[krowa.id].push_back(PierwszaNajwieksza->id);
                     KolejkaTworzenieGrafu.push(*PierwszaNajwieksza);
@@ -107,8 +115,8 @@ public:
                     PierwszaNajwieksza--;
                 }
 
-                for (auto it : To_erase)
-                    Bessie.erase(it);
+                // for (auto it : To_erase)
+                //     Bessie.erase(it);
             }
             else
             {
@@ -120,6 +128,11 @@ public:
 
                 while (PierwszaNajwieksza->BessieTaste >= max((krowa.BessieTaste - D), 1))
                 {
+                    if (OnTheGraph[PierwszaNajwieksza->id])
+                        continue;
+
+                    OnTheGraph[PierwszaNajwieksza->id] = true;
+
                     To_erase.push_back(*PierwszaNajwieksza);
                     Graf[krowa.id].push_back(PierwszaNajwieksza->id);
                     KolejkaTworzenieGrafu.push(*PierwszaNajwieksza);
@@ -130,8 +143,8 @@ public:
                     PierwszaNajwieksza--;
                 }
 
-                for (auto it : To_erase)
-                    Elsie.erase(it);
+                // for (auto it : To_erase)
+                //     Elsie.erase(it);
             }
         }
 
@@ -165,10 +178,10 @@ int main()
     cin.tie(0);
     cout.tie(0);
 
-    // freopen("2.in", "r", stdin);
+    freopen("2.in", "r", stdin);
 
-    freopen("piepie.in", "r", stdin);
-    freopen("piepie.out", "w", stdout);
+    // freopen("piepie.in", "r", stdin);
+    // freopen("piepie.out", "w", stdout);
 
     Solve solution;
     solution.solve();
