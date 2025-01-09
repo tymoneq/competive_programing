@@ -102,7 +102,12 @@ public:
                 while (PierwszaNajwieksza->ElsieTaste >= max((krowa.ElsieTaste - D), 1))
                 {
                     if (OnTheGraph[PierwszaNajwieksza->id])
+                    {
+                        if (PierwszaNajwieksza == Bessie.begin())
+                            break;
+                        PierwszaNajwieksza--;
                         continue;
+                    }
 
                     OnTheGraph[PierwszaNajwieksza->id] = true;
 
@@ -129,7 +134,13 @@ public:
                 while (PierwszaNajwieksza->BessieTaste >= max((krowa.BessieTaste - D), 1))
                 {
                     if (OnTheGraph[PierwszaNajwieksza->id])
+                    {
+                        if (PierwszaNajwieksza == Elsie.begin())
+                            break;
+
+                        PierwszaNajwieksza--;
                         continue;
+                    }
 
                     OnTheGraph[PierwszaNajwieksza->id] = true;
 
@@ -178,7 +189,7 @@ int main()
     cin.tie(0);
     cout.tie(0);
 
-    freopen("2.in", "r", stdin);
+    // freopen("2.in", "r", stdin);
 
     // freopen("piepie.in", "r", stdin);
     // freopen("piepie.out", "w", stdout);
