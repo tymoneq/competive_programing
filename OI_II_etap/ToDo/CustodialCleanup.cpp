@@ -49,67 +49,6 @@ public:
     inline void solve()
     {
         read_data();
-
-        bool ruch = true;
-
-        // starting algo
-
-        for (int w : Graf[1])
-            somsiad.insert(w);
-
-        Sciezka.push_back(1);
-        Vis[1] = true;
-        Klucze[KolorKluczaNaStart[1]]++;
-        KolorKluczaNaStart[1] = -1;
-
-        while (ruch)
-        {
-            ruch = false;
-
-            for (int soms : somsiad)
-                if (Klucze[KolorKorytarza[soms]] > 0 && !Vis[soms])
-                {
-                    Sciezka.push_back(soms);
-                    Klucze[KolorKluczaNaStart[soms]]++;
-
-                    KolorKluczaNaStart[soms] = -1;
-                    ruch = true;
-                    Vis[soms] = true;
-
-                    for (int w : Graf[soms])
-                        if (!Vis[w])
-                            somsiad.insert(w);
-
-                    somsiad.erase(soms);
-                    break;
-                }
-        }
-
-        for (int j = Sciezka.size() - 1; j >= 0; j--)
-        {
-            int pokuj = Sciezka[j];
-
-            if (Klucze[KolorKorytarza[pokuj]] == 0 && pokuj != 1)
-                continue;
-
-            if (Klucze[WymaganyKolorKlucza[pokuj]] <= 0)
-                continue;
-            Klucze[WymaganyKolorKlucza[pokuj]]--;
-            KolorKluczaNaStart[pokuj] = WymaganyKolorKlucza[pokuj];
-        }
-
-        bool check = true;
-        FOR(i, N + 1, 1)
-        {
-            if (WymaganyKolorKlucza[i] == KolorKluczaNaStart[i])
-                continue;
-            check = false;
-        }
-
-        if (check)
-            cout << "YES\n";
-        else
-            cout << "NO\n";
     }
 };
 
