@@ -1,5 +1,5 @@
-g++ -O3 -static -std=c++20 -o wzor.e DzieloBajtycha.cpp
-# g++ -O3 -static -std=c++20 -o brut.e dzieloBrut.cpp
+g++ -O3 -static -std=c++20 -o wzor.e planMiasta.cpp
+g++ -O3 -static -std=c++20 -o brut.e planMiastaBrut.cpp
 g++ -O3 -static -std=c++20 -o gen.e gen.cpp
 
 for((i=1 ; i>0;i++))
