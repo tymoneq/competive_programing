@@ -13,17 +13,13 @@ int main()
     cin >> ziarno;
     srand(ziarno);
 
-    int n = losuj(100, 100);
-    int m = losuj(1, 1);
+    int n = losuj(1, 200);
 
-    cout << n << " " << m << '\n';
+    cout << n << '\n';
 
     for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < m; j++)
-            cout << 1 << ' ';
-
-        cout << '\n';
+        cout << losuj(1, 5'00'000) << ' ';
     }
     return 0;
 }
