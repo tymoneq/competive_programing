@@ -135,6 +135,8 @@ public:
 
                 for (auto itr = ID_sumy.begin(); itr != it; itr++)
                 {
+                    if (ponton == 0)
+                        break;
                     if (ponton - DrzewoSum[*itr + base] >= 0)
                     {
                         Ans.insert({*itr, DrzewoSum[*itr + base]});
@@ -165,6 +167,8 @@ public:
             vector<int> to_erease;
             for (auto itr = ID_sumy.begin(); itr != ID_sumy.end(); itr++)
             {
+                if (ponton == 0)
+                    break;
                 if (ponton - DrzewoSum[*itr + base] >= 0)
                 {
                     Ans.insert({*itr, DrzewoSum[*itr + base]});
