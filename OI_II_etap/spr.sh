@@ -1,5 +1,5 @@
-g++ -O3 -static -std=c++20 -o wzor.e SocialDistancing.cpp
-g++ -O3 -static -std=c++20 -o brut.e SocialDiistancngBrut.cpp
+g++ -O3 -static -std=c++20 -o wzor.e aquapark.cpp
+g++ -O3 -static -std=c++20 -o brut.e aquaBrut.cpp
 g++ -O3 -static -std=c++20 -o gen.e gen.cpp
 
 for((i=1 ; i>0;i++))

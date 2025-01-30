@@ -2,7 +2,7 @@
 
 using namespace std;
 
-int losuj(int a, int b)
+long long losuj(long long  a, long long b)
 {
     return a + rand() % (b - a + 1);
 }
@@ -13,13 +13,38 @@ int main()
     cin >> ziarno;
     srand(ziarno);
 
-    int n = losuj(1, 200);
+    int q = losuj(1, 2'00'000);
 
-    cout << n << '\n';
+    cout << q << '\n';
+    int cnt = 0;
+    int id = 0;
 
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < q; i++)
     {
-        cout << losuj(1, 5'00'000) << ' ';
+        int oper = rand() % 2;
+
+        if (oper == 0)
+        {
+            cnt++;
+
+            if (cnt % 8 == 0)
+            {
+                cout << 'R' << ' ';
+                cout << losuj(1, id) << '\n';
+            }
+            else
+            {
+                cout << 'D' << " ";
+                id++;
+                cout << losuj(1, 200'000) << " " << losuj(0, 1) << '\n';
+            }
+        }
+        if (oper == 1)
+        {
+            cout << 'P' << ' ';
+
+            cout << losuj(1, 1'000'000'000'000) << '\n';
+        }
     }
     return 0;
 }
