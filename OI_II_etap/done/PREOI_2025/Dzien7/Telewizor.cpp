@@ -1,6 +1,3 @@
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx2")
-
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 
@@ -19,87 +16,33 @@ protected:
     int N, M;
     ll res = INF;
 
-    vector<vector<ll>> Filmy;
-    set<ll> StartTimes;
+    vector<pair<int, int>> Filmy;
+    vector<vector<int>> PrefSum;
 
 public:
-    inline void test()
-    {
-
-        N = 250, M = 250;
-        Filmy.resize(N, vector<ll>(M, 0));
-
-        int num = 0;
-
-        FOR(i, N, 0)
-        FOR(j, M, 0)
-        {
-            num++;
-            Filmy[i][j] = num;
-            StartTimes.insert(Filmy[i][j]);
-        }
-        FOR(i, N, 0)
-        sort(Filmy[i].begin(), Filmy[i].end());
-    }
-
     inline void read_data()
     {
         cin >> N >> M;
 
-        Filmy.resize(N, vector<ll>(M, 0));
+        PrefSum.resize(N * M, vector<int>(N));
 
         FOR(i, N, 0)
         FOR(j, M, 0)
         {
-            cin >> Filmy[i][j];
-
-            StartTimes.insert(Filmy[i][j]);
+            int a;
+            cin >> a;
+            Filmy.push_back({a, i});
         }
-        FOR(i, N, 0)
-        sort(Filmy[i].begin(), Filmy[i].end());
-    }
-
-    inline ll find_id(int i, ll stime)
-    {
-
-        ll lo = 0, hi = M - 1, mid, ans = INF * 10000;
-
-        while (lo <= hi)
-        {
-            mid = lo + (hi - lo) / 2;
-
-            if (Filmy[i][mid] >= stime)
-            {
-                ans = Filmy[i][mid];
-                hi = mid - 1;
-            }
-            else
-                lo = mid + 1;
-        }
-
-        return ans;
+        sort(Filmy.begin(), Filmy.end());
     }
 
     inline bool valid(ll days)
     {
         bool corect = true;
 
-        for (ll stime : StartTimes)
+        FOR(i, N * M, 0)
         {
-            corect = true;
-            FOR(i, N, 0)
-            {
-                ll first_greater_time = find_id(i, stime);
-
-                if (first_greater_time > stime + days - 1)
-                {
-                    corect = false;
-                    break;
-                }
-            }
-
-            if (corect)
-                return true;
+            ll last_day = Filmy[i].first + days;
         }
 
         return corect;
@@ -108,7 +51,17 @@ public:
     inline void solve()
     {
         read_data();
-        // test();
+
+        FOR(i, N, 0)
+        {
+            if (Filmy[0].second == i)
+                PrefSum[0][i] = 1;
+            else
+                PrefSum[0][i] = 0;
+
+            FOR(j, N * M, 1)
+            PrefSum[j][i] = PrefSum[j - 1][i] + (Filmy[j].second == i ? 1 : 0);
+        }
 
         ll lo = 1, hi = INF, mid;
 
