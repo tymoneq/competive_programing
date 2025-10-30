@@ -20,7 +20,7 @@ struct AnsComparator
     {
         if (lhs.first != rhs.first)
             return lhs.first < rhs.first;
-        return lhs.second > rhs.second;
+        return lhs.second < rhs.second;
     }
 };
 
@@ -70,7 +70,7 @@ vector<Straight> constructStraights(int i, const vector<Tower> &towers)
 Straight sprawdzCzyNachodzaX(int y1, int y2, const Straight &odcinek, const Segment &potentialSegment)
 {
     Straight newStraight = {-INF, -INF, -INF, -INF};
-    if (y1 == y2 && odcinek.x_end >= potentialSegment.straight.x_start && odcinek.x_start <= potentialSegment.straight.x_end)
+    if (y1 == y2 && (odcinek.x_end >= potentialSegment.straight.x_start && odcinek.x_start <= potentialSegment.straight.x_end))
         newStraight = {max(odcinek.x_start, potentialSegment.straight.x_start), min(odcinek.x_end, potentialSegment.straight.x_end), y1, y1};
 
     return newStraight;
@@ -187,7 +187,7 @@ int main()
             for (int i = el.straight.y_end; i <= el.straight.y_start; i++)
                 allPoints.push_back({el.straight.x_start, i});
 
-        if (el.straight.y_start == el.straight.y_end)
+        else if (el.straight.y_start == el.straight.y_end)
             for (int i = el.straight.x_start; i <= el.straight.x_end; i++)
                 allPoints.push_back({i, el.straight.y_end});
     }
@@ -195,7 +195,7 @@ int main()
 
     for (auto el : allPoints)
     {
-        if ((el.first + el.second) % 2 == 1 || (el.first - el.second) % 2 == 1)
+        if ((el.first + el.second) & 1 == 1 || (el.first - el.second) & 1 == 1)
             continue;
 
         int x1 = (el.first + el.second) / 2;
