@@ -1,0 +1,2 @@
+all:
+	g++ main.cpp -std=c++17 -Wshadow -Wall -o main -fsanitize=address,leak,undefined,float-divide-by-zero,float-cast-overflow -g -fsignaling-nans -fnon-call-exceptions -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC 

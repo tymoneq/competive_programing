@@ -1,12 +1,13 @@
-g++ -O3 -static -std=c++20 -o wzor.e gra.cpp
-g++ -O3 -static -std=c++20 -o brut.e graBrut.cpp
-g++ -O3 -static -std=c++20 -o gen.e gen.cpp
+g++ -O3 -static -std=c++20 -o wzor.e wzor.cpp
+g++ -O3 -static -std=c++20 -o brut.e brut.cpp
+# g++ -O3 -static -std=c++20 -o gen.e gen.cpp
 
 for((i=1 ; i>0;i++))
 do
 # echo $i
 echo $i > ziarno
-    ./gen.e < ziarno > test.in
+    # ./gen.e < ziarno > test.in
+    python3 main.py >  test.in
     ./brut.e < test.in > brut.out
     ./wzor.e < test.in > wzor.out
 
